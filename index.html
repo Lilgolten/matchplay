@@ -1,638 +1,185 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="theme-color" content="#0d6b3f" />
-  <meta name="description" content="Championnat Club Net - Match Play, version iPhone Safari avec saisie directe, sauvegarde automatique, restauration automatique et partage en image." />
-  <title>Championnat Club Net - Match Play</title>
-  <style>
-    :root{--bg:#f4f7f5;--panel:#fff;--panel-soft:#f8fbf9;--text:#173126;--muted:#5f786c;--line:#d9e6de;--brand:#0d6b3f;--brand-strong:#09492b;--brand-soft:#e8f6ee;--danger:#b53a2d;--danger-soft:#fdeae7;--warning:#a96900;--warning-soft:#fff4df;--shadow:0 16px 34px rgba(13,54,34,.08);--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px)}
-    body[data-theme="dark"]{--bg:#111916;--panel:#18211d;--panel-soft:#1d2a24;--text:#edf7f1;--muted:#a8bcae;--line:#304139;--brand:#32b76f;--brand-strong:#239355;--brand-soft:rgba(50,183,111,.12);--danger:#ff8c80;--danger-soft:rgba(255,140,128,.12);--warning:#ffcc72;--warning-soft:rgba(255,204,114,.12);--shadow:0 20px 42px rgba(0,0,0,.26)}
-    *{box-sizing:border-box} html{scroll-behavior:smooth}
-    body{margin:0;background:linear-gradient(180deg,#eef6f1 0%,var(--bg) 220px);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-    body[data-theme="dark"]{background:linear-gradient(180deg,#0f1713 0%,var(--bg) 220px)}
-    .container{max-width:1440px;margin:0 auto;padding:calc(18px + var(--safe-top)) calc(16px + var(--safe-right)) calc(90px + var(--safe-bottom)) calc(16px + var(--safe-left))}
-    .panel{background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:18px;min-width:0}
-    .hero{display:grid;gap:16px}.hero-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
-    h1{margin:0;font-size:clamp(1.55rem,2.3vw,2.35rem);line-height:1.08} h2,h3{margin:0 0 10px;line-height:1.15} p{line-height:1.55}
-    .subtitle{margin:8px 0 0;color:var(--muted)}
-    .badge-row,.toolbar,.course-meta,.banner-meta,.option-row{display:flex;gap:10px;flex-wrap:wrap}
-    .badge,.chip,.course-pill{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:34px;padding:8px 12px;border-radius:999px;font-size:.88rem;font-weight:800;background:var(--brand-soft);color:var(--brand-strong);border:1px solid transparent}
-    .chip.neutral,.course-pill{background:var(--panel-soft);color:var(--muted);border-color:var(--line)} .chip.warning{background:var(--warning-soft);color:var(--warning)} .chip.danger{background:var(--danger-soft);color:var(--danger)}
-    .toolbar{margin-top:12px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
-    button,.upload-btn,input,select,textarea{font:inherit}
-    button,.upload-btn{min-height:44px;padding:0 14px;border-radius:14px;border:1px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer;transition:.15s ease;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-    button:hover,.upload-btn:hover,button:focus-visible,.upload-btn:focus-visible{transform:translateY(-1px);border-color:var(--brand);box-shadow:0 8px 20px rgba(11,48,30,.08);outline:none}
-    button.primary{background:var(--brand);color:#fff;border-color:var(--brand)} button.primary:hover,button.primary:focus-visible{background:var(--brand-strong)} button.soft{background:var(--brand-soft);color:var(--brand-strong);border-color:transparent}
-    .grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.field{display:grid;gap:8px}.field label{font-weight:800;font-size:.93rem}.field small,.muted{color:var(--muted);font-size:.86rem}.error{min-height:1.15em;color:var(--danger);font-size:.82rem}
-    input[type="text"],select,textarea{width:100%;min-height:44px;padding:10px 12px;border-radius:12px;background:var(--panel);border:1px solid var(--line);color:var(--text)}
-    input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid color-mix(in srgb, var(--brand) 22%, transparent);border-color:var(--brand)}
-    .layout-main{margin-top:16px;display:grid;gap:16px}
-    .status-banner{position:sticky;top:calc(12px + var(--safe-top));z-index:10;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-strong) 100%);color:#fff;border-radius:22px;padding:14px 18px;display:grid;gap:14px;grid-template-columns:1.2fr .8fr auto;align-items:center;box-shadow:0 22px 38px rgba(8,55,31,.25)}
-    .status-banner .title{margin:0;font-size:clamp(1rem,1.7vw,1.3rem);font-weight:900}.status-banner .sub{margin-top:4px;opacity:.93;font-size:.93rem}.status-pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:12px 14px;font-weight:800;text-align:center}.status-banner .chip{background:rgba(255,255,255,.13);color:#fff;border-color:rgba(255,255,255,.14)}
-    .summary-grid{display:grid;gap:10px;grid-template-columns:repeat(4,minmax(0,1fr))}.metric{background:var(--panel-soft);border:1px solid var(--line);border-radius:16px;padding:10px 12px;min-height:74px}.metric-label{color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;font-weight:800}.metric-value{margin-top:6px;font-size:1.12rem;font-weight:900}.metric-value.small{font-size:1rem}
-    .scorecard-wrap{overflow:auto;border:1px solid var(--line);border-radius:18px;background:var(--panel)} table{width:100%;border-collapse:collapse;min-width:1120px} th,td{padding:10px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap} th{position:sticky;top:0;background:color-mix(in srgb,var(--panel) 92%,var(--panel-soft));z-index:1;color:var(--muted);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em} tbody tr:nth-child(odd){background:color-mix(in srgb,var(--panel-soft) 55%,transparent)} .score-input{width:74px;min-height:38px;text-align:center;padding:6px 8px}
-    .closed-row{opacity:.68}.result-a{color:var(--brand);font-weight:900}.result-b{color:var(--danger);font-weight:900}.result-half{color:var(--warning);font-weight:900}
-    details{border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:0 16px} summary{cursor:pointer;list-style:none;padding:16px 0;font-weight:900} summary::-webkit-details-marker{display:none} details[open] summary{border-bottom:1px solid var(--line)} details .details-content{padding:14px 0 18px;color:var(--muted)} .footer-note{margin-top:14px;color:var(--muted);font-size:.85rem}.hidden{display:none !important}
-    .mobile-live-panel{display:grid;gap:12px;padding:14px 14px calc(18px + var(--safe-bottom));border-radius:22px}.live-top-shell{position:sticky;top:calc(8px + var(--safe-top));z-index:6;background:color-mix(in srgb,var(--panel) 96%,transparent);backdrop-filter:blur(10px);margin:-4px -4px 0;padding:8px 8px 10px;border-radius:18px;border:1px solid color-mix(in srgb,var(--line) 86%,transparent)}
-    .mobile-live-panel h2{font-size:clamp(1.12rem,4.5vw,1.35rem);line-height:1.15}.mobile-live-panel .subtitle{font-size:.88rem;line-height:1.35}.live-badge-row{width:100%;display:grid;grid-template-columns:1fr 1fr}.live-badge-row .badge{min-width:0;padding:7px 10px;font-size:.82rem}.mobile-live-panel .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.mobile-live-panel .metric{min-height:64px;padding:10px;border-radius:14px}.mobile-live-panel .metric-value{font-size:.98rem;line-height:1.15}
-    .live-score-input{width:100%;min-height:64px;padding:10px 12px;border-radius:18px;text-align:center;font-size:1.55rem;font-weight:900;letter-spacing:.02em;border-width:2px;-webkit-appearance:none;appearance:none}.live-score-input:focus-visible{outline:3px solid color-mix(in srgb,var(--brand) 24%,transparent)}.live-actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.live-actions button{min-height:52px;border-radius:16px;font-weight:900;padding:0 10px}.live-actions button.primary{box-shadow:0 10px 20px rgba(13,107,63,.18)}.live-card-shell{border-top:1px solid var(--line);padding-top:8px}.mobile-current-scorecard{border-radius:16px;overflow:hidden}.mobile-score-table{table-layout:fixed;width:100%;min-width:0 !important}.mobile-score-table th,.mobile-score-table td{white-space:normal;word-break:break-word;font-size:.8rem;line-height:1.2;padding:7px 5px}.mobile-score-table th:nth-child(1),.mobile-score-table td:nth-child(1){width:12%}.mobile-score-table th:nth-child(2),.mobile-score-table td:nth-child(2){width:11%}.mobile-score-table th:nth-child(3),.mobile-score-table td:nth-child(3){width:11%}.mobile-score-table th:nth-child(4),.mobile-score-table td:nth-child(4){width:22%}.mobile-score-table th:nth-child(5),.mobile-score-table td:nth-child(5){width:44%}.live-empty{text-align:center;color:var(--muted);padding:14px}
-    .indicator{position:fixed;left:50%;bottom:calc(16px + var(--safe-bottom));transform:translateX(-50%);z-index:9999;background:rgba(23,49,38,.95);color:#fff;padding:8px 12px;border-radius:999px;font-size:.82rem;font-weight:800;box-shadow:0 10px 24px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease}.indicator.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
-    @supports (-webkit-touch-callout:none){body{min-height:-webkit-fill-available} input,select,textarea{font-size:16px !important}}
-    @media (max-width:1100px){.toolbar{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-2{grid-template-columns:1fr}.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.status-banner{grid-template-columns:1fr;position:static}}
-    @media (max-width:860px){.desktop-scorecard-panel{display:none}.layout-main{gap:14px}.iphone-settings-panels,.iphone-player-panels,.mobile-live-panel{order:initial}}
-    @media (max-width:720px){.toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.summary-grid{grid-template-columns:1fr}}
-    @media (max-width:480px){.container{padding:calc(10px + var(--safe-top)) calc(10px + var(--safe-right)) calc(92px + var(--safe-bottom)) calc(10px + var(--safe-left))}.panel{border-radius:18px;padding:14px}.hero .panel:first-child{padding:14px 12px}.toolbar{gap:8px}.mobile-live-panel .summary-grid{grid-template-columns:1fr 1fr}.live-actions{grid-template-columns:1fr}.live-actions button{min-height:50px;font-size:.92rem}}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1" />
+<meta name="theme-color" content="#0d6b3f" />
+<title>Championnat Club Net - Match Play</title>
+<style>
+:root{--bg:#f4f7f5;--panel:#fff;--text:#173126;--muted:#5f786c;--line:#d9e6de;--brand:#0d6b3f;--brand2:#09492b;--soft:#eef6f1;--danger:#b53a2d;--shadow:0 14px 34px rgba(0,0,0,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(180deg,#eef6f1 0,var(--bg) 220px);color:var(--text)}
+.container{max-width:1200px;margin:0 auto;padding:16px 16px 80px}
+.hero,.panel{background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:16px}
+.hero{margin-bottom:16px}h1,h2,h3{margin:0}.sub{color:var(--muted);margin-top:6px;line-height:1.45}
+.toolbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+button,input,select{font:inherit}button{min-height:44px;border:1px solid var(--line);border-radius:14px;padding:0 14px;background:#fff;cursor:pointer}button.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+.grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.field{display:grid;gap:6px}label{font-weight:800;font-size:.92rem}input,select{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:12px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}.chip{background:var(--soft);color:var(--brand2);padding:8px 12px;border-radius:999px;font-weight:800;font-size:.88rem}
+.banner{position:sticky;top:10px;z-index:5;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:22px;padding:14px 16px;display:grid;gap:10px;grid-template-columns:1.3fr .7fr auto;align-items:center;margin-bottom:16px;box-shadow:0 18px 34px rgba(0,0,0,.16)}
+.banner .pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);padding:10px 12px;border-radius:14px;text-align:center;font-weight:800}
+.metrics{display:grid;gap:10px;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:12px}.metric{background:#f9fbfa;border:1px solid var(--line);border-radius:14px;padding:12px}.metric .l{color:var(--muted);font-size:.74rem;text-transform:uppercase;font-weight:800}.metric .v{margin-top:6px;font-size:1.08rem;font-weight:900}
+.live-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px}.score-input{min-height:62px;font-size:1.5rem;font-weight:900;text-align:center;border-width:2px;border-radius:18px}
+.live-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
+.error{min-height:1.2em;color:var(--danger);font-size:.86rem;margin-top:6px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px;margin-top:12px}table{width:100%;border-collapse:collapse;min-width:980px}th,td{padding:10px 8px;text-align:center;border-bottom:1px solid var(--line)}th{background:var(--soft);position:sticky;top:0;font-size:.8rem;text-transform:uppercase}
+.result-a{color:var(--brand);font-weight:900}.result-b{color:var(--danger);font-weight:900}.result-half{color:#9c6b00;font-weight:900}
+.indicator{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:rgba(23,49,38,.95);color:#fff;padding:8px 12px;border-radius:999px;font-size:.82rem;font-weight:800;opacity:0;transition:.25s;pointer-events:none}.indicator.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
+.footer-note{font-size:.85rem;color:var(--muted);margin-top:10px;line-height:1.45}
+@media (max-width:860px){.grid-2,.metrics,.banner,.toolbar,.live-actions,.live-inputs{grid-template-columns:1fr} .banner{position:static}}
+</style>
 </head>
-<body data-theme="light">
-  <div class="container">
-    <section class="hero">
-      <div class="panel">
-        <div class="hero-top">
-          <div>
-            <h1>Championnat Club Net - Match Play</h1>
-            <p class="subtitle">Version iPhone Safari optimisée pour le suivi live trou par trou, avec saisie directe, sauvegarde automatique après validation du trou, restauration automatique à l’ouverture et partage du résultat en image.</p>
-          </div>
-          <div class="badge-row">
-            <span class="badge">Golf des Yvelines inclus</span>
-            <span class="badge">X / 0 autorisé</span>
-            <span class="badge">3/4 différence arrondie</span>
-          </div>
-        </div>
-        <div class="toolbar" role="toolbar" aria-label="Actions principales">
-          <button id="newMatchBtn" class="primary" type="button">Nouveau match</button>
-          <button id="saveBtn" type="button">Sauvegarder</button>
-          <button id="loadBtn" type="button">Charger</button>
-          <button id="exportBtn" type="button">Exporter JSON</button>
-          <label class="upload-btn" for="jsonFileInput" tabindex="0">Importer JSON</label>
-          <button id="themeBtn" type="button">Mode sombre</button>
-        </div>
-        <input id="jsonFileInput" class="hidden" type="file" accept="application/json,.json" />
-      </div>
-    </section>
+<body>
+<div class="container">
+  <section class="hero">
+    <h1>Championnat Club Net - Match Play</h1>
+    <p class="sub">Version intégrée avec calcul des départs selon la logique <strong>Des Balles et Des Birdies</strong> : le menu <strong>Départ</strong> n'affiche que la couleur, mais la valeur <strong>SSS / Slope</strong> utilisée dépend automatiquement du <strong>genre</strong> choisi.</p>
+    <div class="toolbar">
+      <button id="newBtn" class="primary" type="button">Nouveau match</button>
+      <button id="saveBtn" type="button">Sauvegarder</button>
+      <button id="loadBtn" type="button">Charger</button>
+      <button id="exportBtn" type="button">Exporter JSON</button>
+    </div>
+    <input id="importInput" type="file" accept="application/json,.json" style="display:none" />
+  </section>
 
-    <section class="status-banner" aria-live="polite">
+  <section class="banner">
+    <div>
+      <h2 id="bannerTitle">Square</h2>
+      <div class="sub" id="bannerSub">Aucun trou complet saisi pour le moment.</div>
+    </div>
+    <div class="pill" id="bannerFinal">Résultat final : —</div>
+    <div class="chips">
+      <span class="chip" id="bannerPlayed">Trous joués : 0</span>
+      <span class="chip" id="bannerRemain">Restants : 18</span>
+      <span class="chip" id="bannerLeader">Leader : Aucun</span>
+    </div>
+  </section>
+
+  <main class="grid">
+    <section class="panel grid grid-2">
       <div>
-        <p class="title" id="bannerTitle">Square</p>
-        <div class="sub" id="bannerSubtitle">Aucun score complet saisi pour le moment.</div>
+        <h2>Parcours</h2>
+        <div class="grid grid-2" style="margin-top:12px">
+          <div class="field"><label for="clubSelect">Golf</label><select id="clubSelect"></select></div>
+          <div class="field"><label for="courseSelect">Parcours</label><select id="courseSelect"></select></div>
+        </div>
+        <div class="chips" id="courseChips"></div>
       </div>
-      <div class="status-pill" id="bannerFinal">Résultat final : —</div>
-      <div class="banner-meta">
-        <span class="chip" id="bannerLeader">Leader : Aucun</span>
-        <span class="chip" id="bannerPlayed">Trous joués : 0</span>
-        <span class="chip" id="bannerRemaining">Restants : 18</span>
+      <div>
+        <h2>Live</h2>
+        <div class="metrics" id="liveMetrics"></div>
+        <div class="live-inputs">
+          <div class="field"><label id="liveLabelA" for="liveA">Joueur A</label><input id="liveA" class="score-input" inputmode="text" placeholder="Score / X" /><small id="liveHelpA" class="sub">CR: 0</small></div>
+          <div class="field"><label id="liveLabelB" for="liveB">Joueur B</label><input id="liveB" class="score-input" inputmode="text" placeholder="Score / X" /><small id="liveHelpB" class="sub">CR: 0</small></div>
+        </div>
+        <div class="live-actions">
+          <button id="validateBtn" class="primary" type="button">Valider le trou</button>
+          <button id="undoBtn" type="button">Effacer dernier trou</button>
+          <button id="importBtn" type="button">Importer JSON</button>
+        </div>
+        <div class="error" id="liveError"></div>
+        <p class="footer-note">Saisissez <strong>X</strong> ou <strong>0</strong> pour appliquer le score plafond <strong>Par + coups reçus + 2</strong>.</p>
       </div>
     </section>
 
-    <main class="layout-main">
-      <section class="grid grid-2 iphone-settings-panels">
-        <div class="panel">
-          <h2>Configuration du parcours</h2>
-          <p class="subtitle">Recherchez un golf, filtrez par région et choisissez le parcours à jouer.</p>
-          <div class="grid grid-2" style="margin-top:12px;">
-            <div class="field"><label for="searchInput">Recherche de golf</label><input id="searchInput" type="text" placeholder="Ex. Yvelines, National, Médoc..." autocomplete="off" /></div>
-            <div class="field"><label for="regionSelect">Région</label><select id="regionSelect"></select></div>
-            <div class="field"><label for="clubSelect">Golf</label><select id="clubSelect"></select></div>
-            <div class="field"><label for="courseSelect">Parcours</label><select id="courseSelect"></select></div>
-          </div>
-          <div class="option-row" style="margin-top:14px;"><label style="display:flex;align-items:center;gap:10px;cursor:pointer;"><input id="continueAfterClosed" type="checkbox" /> Continuer à saisir les trous après issue du match</label></div>
-        </div>
-        <div class="panel">
-          <h2>Résumé du parcours</h2>
-          <p class="subtitle" id="courseSummaryText">Sélectionnez un parcours pour afficher ses détails.</p>
-          <div class="course-meta" id="courseMeta" style="margin-top:12px;"></div>
-          <div class="summary-grid" id="courseMetrics" style="margin-top:12px;"></div>
-          <p class="footer-note">Certaines valeurs détaillées sont embarquées en interne pour un usage rapide sur mobile.</p>
-        </div>
-      </section>
+    <section class="grid grid-2">
+      <div class="panel" id="playerA"></div>
+      <div class="panel" id="playerB"></div>
+    </section>
 
-      <section class="grid grid-2 iphone-player-panels">
-        <div class="panel" id="playerAContainer"></div>
-        <div class="panel" id="playerBContainer"></div>
-      </section>
+    <section class="panel">
+      <h2>Carte de score</h2>
+      <div class="table-wrap"><table><thead><tr><th>Trou</th><th>Par</th><th>SI</th><th>Brut A</th><th>Brut B</th><th>CR A</th><th>CR B</th><th>Net A</th><th>Net B</th><th>Résultat trou</th><th>Match</th></tr></thead><tbody id="scoreBody"></tbody></table></div>
+      <p class="footer-note">Pour les parcours ajoutés depuis les cartes BDB, les valeurs <strong>SSS / slope / par</strong> sont intégrées. Les <strong>stroke indexes trou par trou</strong> sont officiels pour les parcours présents dans votre app d'origine (Les Chênes, Les Tilleuls, L'Albatros, Les Vignes, Le Château) et génériques pour les nouveaux parcours ajoutés afin de garder l'app fonctionnelle.</p>
+    </section>
+  </main>
+</div>
+<div id="indicator" class="indicator"></div>
+<script>
+"use strict";
+const STORAGE_KEY = "ccn-matchplay-bdb-v1";
+const COURSES = [{"clubId": "gdy", "clubName": "Golf des Yvelines", "courses": [{"courseId": "chenes", "courseName": "Les Chênes", "holes": 18, "parTotal": 72, "holeData": [{"hole": 1, "par": 4, "strokeIndex": 17}, {"hole": 2, "par": 4, "strokeIndex": 13}, {"hole": 3, "par": 4, "strokeIndex": 7}, {"hole": 4, "par": 3, "strokeIndex": 9}, {"hole": 5, "par": 4, "strokeIndex": 3}, {"hole": 6, "par": 5, "strokeIndex": 11}, {"hole": 7, "par": 4, "strokeIndex": 15}, {"hole": 8, "par": 5, "strokeIndex": 1}, {"hole": 9, "par": 3, "strokeIndex": 5}, {"hole": 10, "par": 4, "strokeIndex": 4}, {"hole": 11, "par": 3, "strokeIndex": 16}, {"hole": 12, "par": 4, "strokeIndex": 2}, {"hole": 13, "par": 5, "strokeIndex": 12}, {"hole": 14, "par": 3, "strokeIndex": 10}, {"hole": 15, "par": 4, "strokeIndex": 6}, {"hole": 16, "par": 4, "strokeIndex": 18}, {"hole": 17, "par": 4, "strokeIndex": 8}, {"hole": 18, "par": 5, "strokeIndex": 14}], "tees": {"H": {"Noir": {"sss": 73.7, "slope": 137, "distance": 6261}, "Blanc": {"sss": 73.4, "slope": 136, "distance": 6187}, "Jaune": {"sss": 71.5, "slope": 128, "distance": 5784}, "Bleu": {"sss": 69.5, "slope": 123, "distance": 5311}, "Rouge": {"sss": 66.9, "slope": 118, "distance": 4846}, "Violet": {"sss": 62.6, "slope": 115, "distance": 4056}, "Orange": {"sss": 54.0, "slope": 113, "distance": 2701}}, "F": {"Jaune": {"sss": 77.8, "slope": 139, "distance": 5784}, "Bleu": {"sss": 75.3, "slope": 134, "distance": 5311}, "Rouge": {"sss": 71.8, "slope": 124, "distance": 4846}, "Violet": {"sss": 67.1, "slope": 121, "distance": 4056}, "Orange": {"sss": 54.0, "slope": 113, "distance": 2701}}}}, {"courseId": "tilleuls", "courseName": "Les Tilleuls", "holes": 9, "parTotal": 62, "holeData": [{"hole": 1, "par": 3, "strokeIndex": 5}, {"hole": 2, "par": 4, "strokeIndex": 7}, {"hole": 3, "par": 3, "strokeIndex": 9}, {"hole": 4, "par": 3, "strokeIndex": 3}, {"hole": 5, "par": 3, "strokeIndex": 6}, {"hole": 6, "par": 4, "strokeIndex": 8}, {"hole": 7, "par": 4, "strokeIndex": 1}, {"hole": 8, "par": 4, "strokeIndex": 2}, {"hole": 9, "par": 3, "strokeIndex": 4}], "tees": {"H": {"Noir": {"sss": 62.0, "slope": 108, "distance": 2011}, "Blanc": {"sss": 62.0, "slope": 109, "distance": 2011}, "Jaune": {"sss": 61.6, "slope": 106, "distance": 1944}, "Bleu": {"sss": 60.3, "slope": 103, "distance": 1742}, "Rouge": {"sss": 60.0, "slope": 103, "distance": 1693}, "Violet": {"sss": 57.5, "slope": 100, "distance": 1447}, "Orange": {"sss": 54.0, "slope": 113, "distance": 974}}, "F": {"Noir": {"sss": 65.2, "slope": 108, "distance": 2011}, "Blanc": {"sss": 65.2, "slope": 109, "distance": 2011}, "Jaune": {"sss": 64.4, "slope": 107, "distance": 1944}, "Bleu": {"sss": 61.9, "slope": 102, "distance": 1742}, "Rouge": {"sss": 61.3, "slope": 101, "distance": 1693}, "Violet": {"sss": 58.5, "slope": 98, "distance": 1447}, "Orange": {"sss": 54.0, "slope": 113, "distance": 974}}}}]}, {"clubId": "gn", "clubName": "Golf National", "courses": [{"courseId": "albatros", "courseName": "L'Albatros", "holes": 18, "parTotal": 72, "holeData": [{"hole": 1, "par": 4, "strokeIndex": 4}, {"hole": 2, "par": 3, "strokeIndex": 6}, {"hole": 3, "par": 5, "strokeIndex": 12}, {"hole": 4, "par": 4, "strokeIndex": 8}, {"hole": 5, "par": 4, "strokeIndex": 16}, {"hole": 6, "par": 4, "strokeIndex": 18}, {"hole": 7, "par": 4, "strokeIndex": 2}, {"hole": 8, "par": 3, "strokeIndex": 14}, {"hole": 9, "par": 5, "strokeIndex": 10}, {"hole": 10, "par": 4, "strokeIndex": 9}, {"hole": 11, "par": 3, "strokeIndex": 17}, {"hole": 12, "par": 4, "strokeIndex": 7}, {"hole": 13, "par": 4, "strokeIndex": 3}, {"hole": 14, "par": 5, "strokeIndex": 11}, {"hole": 15, "par": 4, "strokeIndex": 1}, {"hole": 16, "par": 3, "strokeIndex": 13}, {"hole": 17, "par": 4, "strokeIndex": 5}, {"hole": 18, "par": 5, "strokeIndex": 15}], "tees": {"H": {"Noir": {"sss": 76.9, "slope": 155, "distance": 6652}, "Blanc": {"sss": 73.8, "slope": 155, "distance": 6155}, "Jaune": {"sss": 71.6, "slope": 141, "distance": 5753}, "Bleu": {"sss": 68.9, "slope": 135, "distance": 5211}, "Rouge": {"sss": 68.1, "slope": 134, "distance": 5051}}, "F": {"Jaune": {"sss": 78.3, "slope": 155, "distance": 5753}, "Bleu": {"sss": 75.1, "slope": 148, "distance": 5211}, "Rouge": {"sss": 74.2, "slope": 141, "distance": 5051}}}}, {"courseId": "aigle", "courseName": "L'Aigle", "holes": 18, "parTotal": 71, "holeData": [{"hole": 1, "par": 4, "strokeIndex": 11}, {"hole": 2, "par": 5, "strokeIndex": 5}, {"hole": 3, "par": 3, "strokeIndex": 17}, {"hole": 4, "par": 4, "strokeIndex": 1}, {"hole": 5, "par": 4, "strokeIndex": 13}, {"hole": 6, "par": 5, "strokeIndex": 7}, {"hole": 7, "par": 4, "strokeIndex": 15}, {"hole": 8, "par": 3, "strokeIndex": 9}, {"hole": 9, "par": 4, "strokeIndex": 3}, {"hole": 10, "par": 4, "strokeIndex": 12}, {"hole": 11, "par": 5, "strokeIndex": 6}, {"hole": 12, "par": 3, "strokeIndex": 18}, {"hole": 13, "par": 4, "strokeIndex": 2}, {"hole": 14, "par": 4, "strokeIndex": 14}, {"hole": 15, "par": 4, "strokeIndex": 10}, {"hole": 16, "par": 3, "strokeIndex": 16}, {"hole": 17, "par": 5, "strokeIndex": 4}, {"hole": 18, "par": 4, "strokeIndex": 8}], "tees": {"H": {"Noir": {"sss": 70.9, "slope": 125, "distance": 5834}, "Blanc": {"sss": 70.9, "slope": 122, "distance": 5815}, "Jaune": {"sss": 69.5, "slope": 120, "distance": 5543}, "Bleu": {"sss": 66.5, "slope": 113, "distance": 4936}, "Rouge": {"sss": 65.6, "slope": 111, "distance": 4758}, "Violet": {"sss": 62.1, "slope": 108, "distance": 4135}}, "F": {"Blanc": {"sss": 76.8, "slope": 133, "distance": 5815}, "Jaune": {"sss": 75.2, "slope": 129, "distance": 5543}, "Bleu": {"sss": 71.5, "slope": 121, "distance": 4936}, "Rouge": {"sss": 70.4, "slope": 119, "distance": 4758}, "Violet": {"sss": 66.5, "slope": 116, "distance": 4135}}}}]}, {"clubId": "sqy", "clubName": "Golf R. St Quentin en Yvelines", "courses": [{"courseId": "bleu", "courseName": "Bleu", "holes": 18, "parTotal": 72, "holeData": [{"hole": 1, "par": 4, "strokeIndex": 11}, {"hole": 2, "par": 5, "strokeIndex": 5}, {"hole": 3, "par": 3, "strokeIndex": 17}, {"hole": 4, "par": 4, "strokeIndex": 1}, {"hole": 5, "par": 4, "strokeIndex": 13}, {"hole": 6, "par": 5, "strokeIndex": 7}, {"hole": 7, "par": 4, "strokeIndex": 15}, {"hole": 8, "par": 3, "strokeIndex": 9}, {"hole": 9, "par": 4, "strokeIndex": 3}, {"hole": 10, "par": 4, "strokeIndex": 12}, {"hole": 11, "par": 5, "strokeIndex": 6}, {"hole": 12, "par": 3, "strokeIndex": 18}, {"hole": 13, "par": 4, "strokeIndex": 2}, {"hole": 14, "par": 4, "strokeIndex": 14}, {"hole": 15, "par": 4, "strokeIndex": 10}, {"hole": 16, "par": 3, "strokeIndex": 16}, {"hole": 17, "par": 5, "strokeIndex": 4}, {"hole": 18, "par": 4, "strokeIndex": 8}], "tees": {"H": {"Noir": {"sss": 71.4, "slope": 125, "distance": 6121}, "Blanc": {"sss": 71.4, "slope": 132, "distance": 6121}, "Jaune": {"sss": 69.3, "slope": 129, "distance": 5741}, "Bleu": {"sss": 67.3, "slope": 123, "distance": 5347}, "Rouge": {"sss": 65.5, "slope": 120, "distance": 4983}}, "F": {"Jaune": {"sss": 75.3, "slope": 141, "distance": 5741}, "Bleu": {"sss": 72.9, "slope": 134, "distance": 5347}, "Rouge": {"sss": 70.4, "slope": 128, "distance": 4983}}}}, {"courseId": "rouge", "courseName": "Rouge", "holes": 18, "parTotal": 72, "holeData": [{"hole": 1, "par": 4, "strokeIndex": 11}, {"hole": 2, "par": 5, "strokeIndex": 5}, {"hole": 3, "par": 3, "strokeIndex": 17}, {"hole": 4, "par": 4, "strokeIndex": 1}, {"hole": 5, "par": 4, "strokeIndex": 13}, {"hole": 6, "par": 5, "strokeIndex": 7}, {"hole": 7, "par": 4, "strokeIndex": 15}, {"hole": 8, "par": 3, "strokeIndex": 9}, {"hole": 9, "par": 4, "strokeIndex": 3}, {"hole": 10, "par": 4, "strokeIndex": 12}, {"hole": 11, "par": 5, "strokeIndex": 6}, {"hole": 12, "par": 3, "strokeIndex": 18}, {"hole": 13, "par": 4, "strokeIndex": 2}, {"hole": 14, "par": 4, "strokeIndex": 14}, {"hole": 15, "par": 4, "strokeIndex": 10}, {"hole": 16, "par": 3, "strokeIndex": 16}, {"hole": 17, "par": 5, "strokeIndex": 4}, {"hole": 18, "par": 4, "strokeIndex": 8}], "tees": {"H": {"Noir": {"sss": 70.2, "slope": 125, "distance": 5787}, "Blanc": {"sss": 70.2, "slope": 125, "distance": 5787}, "Jaune": {"sss": 68.4, "slope": 127, "distance": 5456}, "Bleu": {"sss": 66.4, "slope": 123, "distance": 5049}, "Rouge": {"sss": 65.0, "slope": 120, "distance": 4756}, "Violet": {"sss": 62.4, "slope": 117, "distance": 4293}, "Orange": {"sss": 54.0, "slope": 113, "distance": 2695}}, "F": {"Noir": {"sss": 76.3, "slope": 128, "distance": 5787}, "Blanc": {"sss": 76.4, "slope": 128, "distance": 5787}, "Jaune": {"sss": 74.3, "slope": 129, "distance": 5456}, "Bleu": {"sss": 71.8, "slope": 125, "distance": 5049}, "Rouge": {"sss": 69.6, "slope": 126, "distance": 4756}, "Violet": {"sss": 66.7, "slope": 123, "distance": 4293}, "Orange": {"sss": 54.0, "slope": 113, "distance": 2695}}}}]}, {"clubId": "tb", "clubName": "Golf de Terre Blanche", "courses": [{"courseId": "chateau", "courseName": "Le Château", "holes": 18, "parTotal": 72, "holeData": [{"hole": 1, "par": 5, "strokeIndex": 17}, {"hole": 2, "par": 3, "strokeIndex": 11}, {"hole": 3, "par": 4, "strokeIndex": 1}, {"hole": 4, "par": 4, "strokeIndex": 3}, {"hole": 5, "par": 4, "strokeIndex": 7}, {"hole": 6, "par": 5, "strokeIndex": 5}, {"hole": 7, "par": 3, "strokeIndex": 15}, {"hole": 8, "par": 4, "strokeIndex": 13}, {"hole": 9, "par": 4, "strokeIndex": 9}, {"hole": 10, "par": 4, "strokeIndex": 2}, {"hole": 11, "par": 5, "strokeIndex": 16}, {"hole": 12, "par": 4, "strokeIndex": 14}, {"hole": 13, "par": 3, "strokeIndex": 12}, {"hole": 14, "par": 5, "strokeIndex": 4}, {"hole": 15, "par": 4, "strokeIndex": 6}, {"hole": 16, "par": 3, "strokeIndex": 18}, {"hole": 17, "par": 4, "strokeIndex": 10}, {"hole": 18, "par": 4, "strokeIndex": 8}], "tees": {"H": {"Noir": {"sss": 78.1, "slope": 150, "distance": 6616}, "Blanc": {"sss": 77.4, "slope": 149, "distance": 6481}, "Jaune": {"sss": 74.8, "slope": 146, "distance": 6044}, "Bleu": {"sss": 73.1, "slope": 143, "distance": 5703}, "Rouge": {"sss": 70.5, "slope": 137, "distance": 5178}}, "F": {"Jaune": {"sss": 81.6, "slope": 154, "distance": 6044}, "Bleu": {"sss": 79.6, "slope": 150, "distance": 5703}, "Rouge": {"sss": 75.9, "slope": 138, "distance": 5178}}}}, {"courseId": "riou", "courseName": "Le Riou", "holes": 18, "parTotal": 72, "holeData": [{"hole": 1, "par": 4, "strokeIndex": 11}, {"hole": 2, "par": 5, "strokeIndex": 5}, {"hole": 3, "par": 3, "strokeIndex": 17}, {"hole": 4, "par": 4, "strokeIndex": 1}, {"hole": 5, "par": 4, "strokeIndex": 13}, {"hole": 6, "par": 5, "strokeIndex": 7}, {"hole": 7, "par": 4, "strokeIndex": 15}, {"hole": 8, "par": 3, "strokeIndex": 9}, {"hole": 9, "par": 4, "strokeIndex": 3}, {"hole": 10, "par": 4, "strokeIndex": 12}, {"hole": 11, "par": 5, "strokeIndex": 6}, {"hole": 12, "par": 3, "strokeIndex": 18}, {"hole": 13, "par": 4, "strokeIndex": 2}, {"hole": 14, "par": 4, "strokeIndex": 14}, {"hole": 15, "par": 4, "strokeIndex": 10}, {"hole": 16, "par": 3, "strokeIndex": 16}, {"hole": 17, "par": 5, "strokeIndex": 4}, {"hole": 18, "par": 4, "strokeIndex": 8}], "tees": {"H": {"Noir": {"sss": 73.4, "slope": 146, "distance": 6005}, "Blanc": {"sss": 72.8, "slope": 146, "distance": 5893}, "Jaune": {"sss": 71.2, "slope": 139, "distance": 5591}, "Bleu": {"sss": 69.6, "slope": 136, "distance": 5273}, "Rouge": {"sss": 67.9, "slope": 132, "distance": 4926}}, "F": {"Jaune": {"sss": 77.0, "slope": 144, "distance": 5591}, "Bleu": {"sss": 75.1, "slope": 140, "distance": 5273}, "Rouge": {"sss": 73.5, "slope": 132, "distance": 4926}}}}]}, {"clubId": "medoc", "clubName": "Golf du Médoc", "courses": [{"courseId": "vignes", "courseName": "Les Vignes", "holes": 18, "parTotal": 71, "holeData": [{"hole": 1, "par": 4, "strokeIndex": 4}, {"hole": 2, "par": 3, "strokeIndex": 12}, {"hole": 3, "par": 4, "strokeIndex": 2}, {"hole": 4, "par": 5, "strokeIndex": 6}, {"hole": 5, "par": 3, "strokeIndex": 8}, {"hole": 6, "par": 5, "strokeIndex": 16}, {"hole": 7, "par": 4, "strokeIndex": 14}, {"hole": 8, "par": 4, "strokeIndex": 10}, {"hole": 9, "par": 3, "strokeIndex": 18}, {"hole": 10, "par": 4, "strokeIndex": 13}, {"hole": 11, "par": 5, "strokeIndex": 3}, {"hole": 12, "par": 4, "strokeIndex": 11}, {"hole": 13, "par": 3, "strokeIndex": 15}, {"hole": 14, "par": 4, "strokeIndex": 9}, {"hole": 15, "par": 4, "strokeIndex": 1}, {"hole": 16, "par": 5, "strokeIndex": 7}, {"hole": 17, "par": 3, "strokeIndex": 17}, {"hole": 18, "par": 4, "strokeIndex": 5}], "tees": {"H": {"Noir": {"sss": 72.7, "slope": 129, "distance": 6161}, "Blanc": {"sss": 72.7, "slope": 129, "distance": 6161}, "Jaune": {"sss": 69.7, "slope": 126, "distance": 5628}, "Bleu": {"sss": 66.9, "slope": 120, "distance": 5058}, "Rouge": {"sss": 64.6, "slope": 116, "distance": 4604}, "Violet": {"sss": 62.1, "slope": 113, "distance": 4153}, "Orange": {"sss": 54.0, "slope": 113, "distance": 2467}}, "F": {"Jaune": {"sss": 75.4, "slope": 133, "distance": 5628}, "Bleu": {"sss": 72.0, "slope": 126, "distance": 5058}, "Rouge": {"sss": 69.0, "slope": 119, "distance": 4604}, "Violet": {"sss": 66.2, "slope": 116, "distance": 4153}, "Orange": {"sss": 54.0, "slope": 113, "distance": 2467}}}}, {"courseId": "chateaux", "courseName": "Les Châteaux", "holes": 18, "parTotal": 71, "holeData": [{"hole": 1, "par": 4, "strokeIndex": 11}, {"hole": 2, "par": 5, "strokeIndex": 5}, {"hole": 3, "par": 3, "strokeIndex": 17}, {"hole": 4, "par": 4, "strokeIndex": 1}, {"hole": 5, "par": 4, "strokeIndex": 13}, {"hole": 6, "par": 5, "strokeIndex": 7}, {"hole": 7, "par": 4, "strokeIndex": 15}, {"hole": 8, "par": 3, "strokeIndex": 9}, {"hole": 9, "par": 4, "strokeIndex": 3}, {"hole": 10, "par": 4, "strokeIndex": 12}, {"hole": 11, "par": 5, "strokeIndex": 6}, {"hole": 12, "par": 3, "strokeIndex": 18}, {"hole": 13, "par": 4, "strokeIndex": 2}, {"hole": 14, "par": 4, "strokeIndex": 14}, {"hole": 15, "par": 4, "strokeIndex": 10}, {"hole": 16, "par": 3, "strokeIndex": 16}, {"hole": 17, "par": 5, "strokeIndex": 4}, {"hole": 18, "par": 4, "strokeIndex": 8}], "tees": {"H": {"Noir": {"sss": 74.8, "slope": 136, "distance": 6528}, "Blanc": {"sss": 73.3, "slope": 133, "distance": 6263}, "Jaune": {"sss": 70.8, "slope": 127, "distance": 5794}, "Bleu": {"sss": 67.3, "slope": 120, "distance": 5093}, "Rouge": {"sss": 65.4, "slope": 116, "distance": 4721}}, "F": {"Jaune": {"sss": 76.6, "slope": 137, "distance": 5794}, "Bleu": {"sss": 72.4, "slope": 127, "distance": 5093}, "Rouge": {"sss": 69.8, "slope": 121, "distance": 4721}}}}]}];
+const deepClone = v => JSON.parse(JSON.stringify(v));
+const roundHalfUp = x => Number.isFinite(x) ? (x>=0 ? Math.floor(x+0.5) : Math.ceil(x-0.5)) : null;
+const clamp = (n,min,max)=>Math.min(Math.max(n,min),max);
+const parseIndex = v => { const s=String(v??"").trim().replace(",", "."); const n=Number(s); return Number.isFinite(n)?n:null; };
+const parseScore = v => { const s=String(v??"").trim(); if(!s) return {ok:true, val:null}; if(s==='0' || /^x$/i.test(s)) return {ok:true, val:'X'}; if(/^\d+$/.test(s) && Number(s)>0) return {ok:true, val:Number(s)}; return {ok:false, msg:'Entrez un entier positif, ou X / 0.'}; };
+const scoreDisplay = v => v==='X' ? 'X' : (Number.isFinite(v)?String(v):'');
+const isEntered = v => v==='X' || (Number.isInteger(v) && v>0);
+const maxGross = (par,cr)=> par + cr + 2;
+const effectiveGross = (raw,par,cr)=> raw==='X' ? maxGross(par,cr) : (Number.isFinite(raw)?raw:null);
+const calcNet = (raw,cr,par)=> { const g=effectiveGross(raw,par,cr); return Number.isFinite(g)? g-cr : null; };
+const genderLabel = g => g==='H' ? 'Homme' : 'Femme';
+function showIndicator(msg, ms=1600){ const el=document.getElementById('indicator'); el.textContent=msg; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'), ms); }
+function toast(msg){ showIndicator(msg,1800); }
+function getClub(id){ return COURSES.find(c=>c.clubId===id) || COURSES[0]; }
+function getCourse(clubId, courseId){ return getClub(clubId).courses.find(c=>c.courseId===courseId) || getClub(clubId).courses[0]; }
+function buildRows(course){ return course.holeData.map(h=>({ hole:h.hole, playerAGross:null, playerBGross:null, aCR:0, bCR:0, aNet:null, bNet:null, result:{winner:null,text:'—',className:''}, running:'—' })); }
+const defaultClub = COURSES[0];
+const defaultCourse = defaultClub.courses[0];
+const state = {
+  clubId: defaultClub.clubId,
+  courseId: defaultCourse.courseId,
+  players: {
+    A: {name:'Joueur A', gender:'H', index:14.2, tee:'Jaune', exact:null, playing:null, matchCR:0, holeCR:{}},
+    B: {name:'Joueur B', gender:'H', index:18.7, tee:'Bleu', exact:null, playing:null, matchCR:0, holeCR:{}},
+  },
+  rows: buildRows(defaultCourse),
+  match: {status:'Square', final:'', balance:0, holesPlayed:0, remaining:defaultCourse.holes, closed:false, closedOn:null},
+  live: {a:'', b:''}
+};
 
-      <section class="panel mobile-live-panel" id="mobileLivePanel">
-        <div class="hero-top live-top-shell">
-          <div>
-            <h2>Mode live — iPhone Safari</h2>
-            <p class="subtitle">Saisie directe : configurez d’abord le parcours et les joueurs, puis entrez immédiatement le score du trou en cours. Le panneau live reste en bas de page après les réglages.</p>
-          </div>
-          <div class="badge-row live-badge-row">
-            <span class="badge" id="liveStateBadge">Saisie directe</span>
-            <span class="badge" id="liveCurrentHoleBadge">Trou 1 / 18</span>
-          </div>
-        </div>
-        <div class="summary-grid" id="liveSummaryMetrics" style="margin-top:12px;"></div>
-        <div class="grid grid-2" id="liveEntryGrid" style="margin-top:12px;">
-          <div class="field"><label id="liveScoreLabelA" for="liveScoreA">Joueur A</label><input id="liveScoreA" class="live-score-input" type="text" inputmode="text" pattern="[0-9xX]*" placeholder="Score ou X / 0" autocomplete="off" /><small id="liveScoreHelpA">CR : 0</small></div>
-          <div class="field"><label id="liveScoreLabelB" for="liveScoreB">Joueur B</label><input id="liveScoreB" class="live-score-input" type="text" inputmode="text" pattern="[0-9xX]*" placeholder="Score ou X / 0" autocomplete="off" /><small id="liveScoreHelpB">CR : 0</small></div>
-        </div>
-        <div class="toolbar live-actions" style="margin-top:12px;">
-          <button id="liveValidateBtn" class="primary" type="button">Valider le trou</button>
-          <button id="liveUndoBtn" type="button">Effacer le dernier trou</button>
-          <button id="shareResultBtn" class="soft" type="button">Partager le résultat en image</button>
-        </div>
-        <div id="liveError" class="error"></div>
-        <div class="live-card-shell" style="margin-top:8px;">
-          <h3>Carte actuelle</h3>
-          <div class="scorecard-wrap mobile-current-scorecard" style="margin-top:10px;">
-            <table class="mobile-score-table">
-              <thead><tr><th>Trou</th><th>A</th><th>B</th><th>Trou</th><th>Match</th></tr></thead>
-              <tbody id="liveScorecardBody"><tr><td colspan="5" class="live-empty">Aucun trou validé pour le moment.</td></tr></tbody>
-            </table>
-          </div>
-          <p class="footer-note">Astuce iPhone : vous pouvez saisir <strong>X</strong> ou <strong>0</strong> pour prendre le score plafond du trou.</p>
-        </div>
-      </section>
-
-      <section class="panel desktop-scorecard-panel">
-        <h2>Carte de score</h2>
-        <p class="subtitle">Saisissez un score brut positif, ou <strong>X / 0</strong> pour prendre un score plafond. Le score plafond appliqué est <strong>Par + coups reçus + 2</strong>.</p>
-        <div class="scorecard-wrap" style="margin-top:12px;">
-          <table>
-            <thead><tr><th>Trou</th><th>Par</th><th>SI</th><th>Brut A</th><th>Brut B</th><th>CR A</th><th>CR B</th><th>Net A</th><th>Net B</th><th>Résultat du trou</th><th>Statut du match</th></tr></thead>
-            <tbody id="scorecardBody"></tbody>
-          </table>
-        </div>
-        <p class="footer-note">CR = coups reçus sur le trou. Vous pouvez aussi taper <strong>x</strong> en minuscule. Appuyez sur Entrée pour passer au champ suivant.</p>
-      </section>
-
-      <section class="grid grid-2">
-        <details>
-          <summary>Comment sont calculés les handicaps et les coups rendus ?</summary>
-          <div class="details-content">
-            <p><strong>Handicap de parcours :</strong> <code>(Index × Slope / 113) + (Course Rating - Par)</code>. La valeur interne reste non arrondie, puis un handicap arrondi est affiché.</p>
-            <p><strong>Championnat club net :</strong> le joueur au plus faible handicap de jeu joue à zéro. L’autre reçoit <strong>3/4 de la différence de handicap</strong>, <strong>arrondie</strong>, répartie selon l’ordre des stroke indexes.</p>
-            <p><strong>X / 0 :</strong> si vous saisissez <strong>X</strong> ou <strong>0</strong>, l’application attribue un score plafond égal à <strong>Par + coups reçus + 2</strong>.</p>
-          </div>
-        </details>
-        <details>
-          <summary>Mode d’emploi</summary>
-          <div class="details-content">
-            <p>1. Choisissez un golf et un parcours. 2. Configurez les deux joueurs. 3. Saisissez les scores trou par trou. 4. La partie se sauvegarde automatiquement après chaque trou validé et se restaure automatiquement à l’ouverture.</p>
-          </div>
-        </details>
-      </section>
-    </main>
+function currentCourse(){ return getCourse(state.clubId, state.courseId); }
+function getTee(playerKey){ const c=currentCourse(); const p=state.players[playerKey]; return c.tees[p.gender]?.[p.tee] || null; }
+function availableTees(playerKey){ const c=currentCourse(); return Object.keys(c.tees[state.players[playerKey].gender]||{}); }
+function courseHandicap(index, slope, sss, par){ return [index,slope,sss,par].every(Number.isFinite) ? index*slope/113 + (sss-par) : null; }
+function matchAllowance(a,b){ if(![a,b].every(Number.isFinite)) return {A:0,B:0}; const diff=roundHalfUp(Math.abs(a-b)*0.75); if(a<b) return {A:0,B:diff}; if(b<a) return {A:diff,B:0}; return {A:0,B:0}; }
+function distributeCR(holeData, shots){ const map={}; holeData.forEach(h=>map[h.hole]=0); if(!Number.isFinite(shots)||shots<=0) return map; const ordered=[...holeData].sort((a,b)=>a.strokeIndex-b.strokeIndex); const cycles=Math.floor(shots/ordered.length); const rem=shots%ordered.length; ordered.forEach(h=>map[h.hole]=cycles); for(let i=0;i<rem;i++) map[ordered[i].hole] += 1; return map; }
+function evalHole(a,b,nA,nB){ if(!Number.isFinite(nA) || !Number.isFinite(nB)) return {winner:null,text:'—',className:''}; if(nA<nB) return {winner:'A',text:`${a} gagne le trou`,className:'result-a'}; if(nB<nA) return {winner:'B',text:`${b} gagne le trou`,className:'result-b'}; return {winner:'HALF',text:'Trou partagé',className:'result-half'}; }
+function recompute(){
+  const course=currentCourse();
+  if(state.rows.length !== course.holes){ const old=deepClone(state.rows); state.rows=buildRows(course); state.rows.forEach((r,i)=>{ if(old[i]){ r.playerAGross=old[i].playerAGross; r.playerBGross=old[i].playerBGross; } }); }
+  ['A','B'].forEach(k=>{ const p=state.players[k]; p.index=clamp(parseIndex(p.index) ?? 0, -9.4, 54); const tees=availableTees(k); if(!tees.includes(p.tee)) p.tee=tees[0] || ''; const t=getTee(k); p.exact=t ? courseHandicap(p.index, t.slope, t.sss, course.parTotal) : null; p.playing=roundHalfUp(p.exact); });
+  const allow=matchAllowance(state.players.A.playing, state.players.B.playing); state.players.A.matchCR=allow.A; state.players.B.matchCR=allow.B;
+  state.players.A.holeCR=distributeCR(course.holeData, allow.A); state.players.B.holeCR=distributeCR(course.holeData, allow.B);
+  let bal=0, closed=false, final='', played=0, closedOn=null;
+  state.rows.forEach((r,idx)=>{ const h=course.holeData[idx]; r.aCR=state.players.A.holeCR[r.hole] || 0; r.bCR=state.players.B.holeCR[r.hole] || 0; r.aNet=calcNet(r.playerAGross, r.aCR, h.par); r.bNet=calcNet(r.playerBGross, r.bCR, h.par); r.result=evalHole(state.players.A.name||'A', state.players.B.name||'B', r.aNet, r.bNet); if(r.result.winner==='A') bal += 1; if(r.result.winner==='B') bal -= 1; if(Number.isFinite(r.aNet) && Number.isFinite(r.bNet)){ played = idx+1; const rem=course.holes-played; const abs=Math.abs(bal); let status='Square'; if(bal>0) status=`${state.players.A.name||'A'} ${abs} up`; if(bal<0) status=`${state.players.B.name||'B'} ${abs} up`; if(!closed && abs>rem){ closed=true; closedOn=r.hole; final=`${bal>0?(state.players.A.name||'A'):(state.players.B.name||'B')} gagne ${abs}&${rem}`; status=final; } else if(!closed && played===course.holes && bal===0){ final='Match partagé'; status=final; } else if(!closed && played===course.holes && bal!==0){ final=`${bal>0?(state.players.A.name||'A'):(state.players.B.name||'B')} gagne ${abs} up`; status=final; } r.running=status; } else { r.running='—'; } });
+  state.match.balance=bal; state.match.holesPlayed=played; state.match.remaining=Math.max(course.holes-played,0); state.match.closed=closed; state.match.closedOn=closedOn; state.match.final=final; state.match.status=played ? (state.rows[played-1].running||'Square') : 'Square';
+}
+function renderClubCourse(){
+  const clubSel=document.getElementById('clubSelect'), courseSel=document.getElementById('courseSelect');
+  clubSel.innerHTML=COURSES.map(c=>`<option value="${c.clubId}">${c.clubName}</option>`).join(''); clubSel.value=state.clubId;
+  const club=getClub(state.clubId); courseSel.innerHTML=club.courses.map(c=>`<option value="${c.courseId}">${c.courseName} — ${c.holes} trous</option>`).join(''); courseSel.value=state.courseId;
+  const course=currentCourse(); document.getElementById('courseChips').innerHTML=`<span class="chip">Par ${course.parTotal}</span><span class="chip">${course.holes} trous</span><span class="chip">Départs auto selon genre</span>`;
+}
+function playerCard(k){ const p=state.players[k]; const course=currentCourse(); const tees=availableTees(k); const tee=getTee(k); return `
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px"><div><h2>Joueur ${k}</h2><div class="sub">Le départ est automatiquement interprété selon le genre choisi.</div></div><span class="chip">${k}</span></div>
+  <div class="grid grid-2">
+    <div class="field"><label>Nom</label><input data-role="name" data-player="${k}" value="${String(p.name).replace(/"/g,'&quot;')}"></div>
+    <div class="field"><label>Genre</label><select data-role="gender" data-player="${k}"><option value="H" ${p.gender==='H'?'selected':''}>Homme</option><option value="F" ${p.gender==='F'?'selected':''}>Femme</option></select></div>
+    <div class="field"><label>Index</label><input data-role="index" data-player="${k}" type="number" step="0.1" min="-9.4" max="54" value="${p.index}"></div>
+    <div class="field"><label>Départ</label><select data-role="tee" data-player="${k}">${tees.map(t=>`<option value="${t}" ${t===p.tee?'selected':''}>${t}</option>`).join('')}</select></div>
   </div>
+  <div class="metrics">${metric('SSS', tee?tee.sss.toFixed(1):'—')}${metric('Slope', tee?tee.slope:'—')}${metric('Distance', tee?tee.distance+' m':'—')}${metric('HC exact', Number.isFinite(p.exact)?p.exact.toFixed(1):'—')}${metric('HC jeu', Number.isFinite(p.playing)?p.playing:'—')}${metric('CR match', p.matchCR||0)}</div>`; }
+function metric(l,v){ return `<div class="metric"><div class="l">${l}</div><div class="v">${v}</div></div>`; }
+function renderPlayers(){ document.getElementById('playerA').innerHTML=playerCard('A'); document.getElementById('playerB').innerHTML=playerCard('B'); }
+function renderBanner(){ document.getElementById('bannerTitle').textContent=state.match.status||'Square'; document.getElementById('bannerSub').textContent=state.match.closed ? `Match mathématiquement terminé au trou ${state.match.closedOn}.` : (state.match.holesPlayed ? 'Le statut se met à jour automatiquement dès qu’un trou est complet.' : 'Aucun trou complet saisi pour le moment.'); document.getElementById('bannerFinal').textContent=`Résultat final : ${state.match.final || '—'}`; document.getElementById('bannerPlayed').textContent=`Trous joués : ${state.match.holesPlayed}`; document.getElementById('bannerRemain').textContent=`Restants : ${state.match.remaining}`; const leader = state.match.balance>0 ? (state.players.A.name||'A') : (state.match.balance<0 ? (state.players.B.name||'B') : 'Aucun'); document.getElementById('bannerLeader').textContent=`Leader : ${leader}`; }
+function renderLive(){ const course=currentCourse(); const nextIdx = state.rows.findIndex(r=>!(isEntered(r.playerAGross)&&isEntered(r.playerBGross))); const idx = nextIdx===-1 ? Math.max(course.holes-1,0) : nextIdx; const row=state.rows[idx]; const hole=course.holeData[idx]; document.getElementById('liveLabelA').textContent=`${state.players.A.name||'Joueur A'} — trou ${row.hole}`; document.getElementById('liveLabelB').textContent=`${state.players.B.name||'Joueur B'} — trou ${row.hole}`; document.getElementById('liveHelpA').textContent=`CR : ${row.aCR||0} • Par : ${hole.par} • SI : ${hole.strokeIndex}`; document.getElementById('liveHelpB').textContent=`CR : ${row.bCR||0} • Par : ${hole.par} • SI : ${hole.strokeIndex}`; document.getElementById('liveA').value=state.live.a!=='' ? state.live.a : scoreDisplay(row.playerAGross); document.getElementById('liveB').value=state.live.b!=='' ? state.live.b : scoreDisplay(row.playerBGross); document.getElementById('liveMetrics').innerHTML=`${metric('Statut', state.match.status||'Square')}${metric('Trous joués', state.match.holesPlayed)}${metric('Restants', state.match.remaining)}${metric('Résultat', state.match.final||'—')}`; }
+function renderTable(){ const body=document.getElementById('scoreBody'); const course=currentCourse(); body.innerHTML=state.rows.map((r,idx)=>{ const h=course.holeData[idx]; return `<tr><td>${r.hole}</td><td>${h.par}</td><td>${h.strokeIndex}</td><td>${scoreDisplay(r.playerAGross)}</td><td>${scoreDisplay(r.playerBGross)}</td><td>${r.aCR}</td><td>${r.bCR}</td><td>${Number.isFinite(r.aNet)?r.aNet:'—'}</td><td>${Number.isFinite(r.bNet)?r.bNet:'—'}</td><td class="${r.result.className}">${r.result.text}</td><td>${r.running}</td></tr>`; }).join(''); }
+function render(){ renderClubCourse(); renderPlayers(); renderBanner(); renderLive(); renderTable(); }
+function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); showIndicator('Sauvegardé'); }
+function load(){ const raw=localStorage.getItem(STORAGE_KEY); if(!raw){ toast('Aucune sauvegarde locale'); return; } try{ const obj=JSON.parse(raw); Object.assign(state, obj); recompute(); render(); toast('Sauvegarde chargée'); }catch(e){ toast('Sauvegarde corrompue'); } }
+function exportJson(){ const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='matchplay_bdb.json'; a.click(); URL.revokeObjectURL(url); }
+function importJson(file){ const reader=new FileReader(); reader.onload=()=>{ try{ const obj=JSON.parse(reader.result); Object.assign(state,obj); recompute(); render(); save(); toast('Match importé'); }catch(e){ toast('Import impossible'); } }; reader.readAsText(file,'utf-8'); }
+function reset(){ state.clubId=COURSES[0].clubId; state.courseId=COURSES[0].courses[0].courseId; state.players.A={name:'Joueur A', gender:'H', index:14.2, tee:'Jaune', exact:null, playing:null, matchCR:0, holeCR:{}}; state.players.B={name:'Joueur B', gender:'H', index:18.7, tee:'Bleu', exact:null, playing:null, matchCR:0, holeCR:{}}; state.rows=buildRows(currentCourse()); state.match={status:'Square', final:'', balance:0, holesPlayed:0, remaining:currentCourse().holes, closed:false, closedOn:null}; state.live={a:'',b:''}; recompute(); render(); save(); }
 
-  <div id="statusIndicator" class="indicator" aria-live="polite"></div>
-
-  <script>
-    "use strict";
-
-    const STORAGE_KEY = "championnat-club-net-matchplay-v1";
-    const APP_VERSION = "3.0.0";
-    const HANDICAP_LIMITS = { min: -9.4, max: 54.0 };
-    const PLAYER_KEYS = ["A","B"];
-    const DEV_MODE = false;
-    const debugLog = (...args) => DEV_MODE && console.log("[CCN-MP]", ...args);
-    const deepClone = value => JSON.parse(JSON.stringify(value));
-    const clamp = (num,min,max) => Math.min(Math.max(num,min),max);
-    const roundHalfUp = num => Number.isFinite(num) ? (num >= 0 ? Math.floor(num + 0.5) : Math.ceil(num - 0.5)) : null;
-    const formatOneDecimal = num => Number.isFinite(num) ? num.toFixed(1) : "—";
-    const formatInteger = num => Number.isFinite(num) ? String(num) : "—";
-    const formatScoreDisplay = value => value === "X" ? "X" : (Number.isFinite(value) ? String(value) : "");
-    const isScoreEntered = value => value === "X" || (Number.isInteger(value) && value > 0);
-    const normalize = text => String(text || "").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
-    const textIncludes = (text, query) => normalize(text).includes(normalize(query));
-
-    function showIndicator(message, duration = 1500) {
-      const el = document.getElementById("statusIndicator");
-      if (!el) return;
-      el.textContent = message;
-      el.classList.add("show");
-      clearTimeout(el._timer);
-      el._timer = setTimeout(() => el.classList.remove("show"), duration);
-    }
-    function toast(message, isError = false) {
-      const el = document.createElement("div");
-      el.textContent = message;
-      Object.assign(el.style, { position:"fixed", right:"16px", bottom:"16px", zIndex:9999, padding:"12px 14px", borderRadius:"14px", background:isError?"#8a2f23":"#0d6b3f", color:"#fff", boxShadow:"0 14px 28px rgba(0,0,0,.18)", fontWeight:"800", maxWidth:"min(92vw, 420px)" });
-      document.body.appendChild(el);
-      setTimeout(() => {
-        el.style.transition = "opacity .25s ease, transform .25s ease";
-        el.style.opacity = "0";
-        el.style.transform = "translateY(10px)";
-        setTimeout(() => el.remove(), 260);
-      }, 2200);
-    }
-
-    function parseHandicapIndexValue(value) {
-      if (value === null || value === undefined) return null;
-      const normalized = String(value).trim().replace(",", ".");
-      if (!normalized) return null;
-      const num = Number(normalized);
-      return Number.isFinite(num) ? num : null;
-    }
-    function parseScoreEntry(value) {
-      if (value === null || value === undefined) return { valid:true, parsed:null };
-      const raw = String(value).trim();
-      if (!raw) return { valid:true, parsed:null };
-      if (raw === "0" || /^x$/i.test(raw)) return { valid:true, parsed:"X" };
-      if (!/^[1-9]\d*$/.test(raw)) return { valid:false, parsed:null, message:"Entrez un entier positif, ou X / 0 pour score plafond." };
-      return { valid:true, parsed:Number(raw) };
-    }
-    function sanitizeScoreValue(value) {
-      if (value === null || value === undefined || value === "") return null;
-      if (value === "X" || value === "x" || value === 0 || value === "0") return "X";
-      const parsed = Number(value);
-      return Number.isInteger(parsed) && parsed > 0 ? parsed : null;
-    }
-    function getMaxGrossForHole(par, strokesReceived) { return Number.isFinite(par) ? par + (Number.isFinite(strokesReceived) ? strokesReceived : 0) + 2 : null; }
-    function effectiveGross(rawGross, par, strokesReceived) { return rawGross === "X" ? getMaxGrossForHole(par, strokesReceived) : (Number.isFinite(rawGross) ? rawGross : null); }
-    function calculateHoleNetScore(rawGross, strokesReceived, par) {
-      const gross = effectiveGross(rawGross, par, strokesReceived);
-      return Number.isFinite(gross) ? gross - (Number.isFinite(strokesReceived) ? strokesReceived : 0) : null;
-    }
-
-    const holeTemplate18 = [
-      { hole:1, par:4, strokeIndex:11 },{ hole:2, par:5, strokeIndex:5 },{ hole:3, par:3, strokeIndex:17 },{ hole:4, par:4, strokeIndex:1 },
-      { hole:5, par:4, strokeIndex:13 },{ hole:6, par:5, strokeIndex:7 },{ hole:7, par:4, strokeIndex:15 },{ hole:8, par:3, strokeIndex:9 },
-      { hole:9, par:4, strokeIndex:3 },{ hole:10, par:4, strokeIndex:12 },{ hole:11, par:5, strokeIndex:6 },{ hole:12, par:3, strokeIndex:18 },
-      { hole:13, par:4, strokeIndex:2 },{ hole:14, par:4, strokeIndex:14 },{ hole:15, par:4, strokeIndex:10 },{ hole:16, par:3, strokeIndex:16 },
-      { hole:17, par:5, strokeIndex:4 },{ hole:18, par:4, strokeIndex:8 }
-    ];
-    const holeTemplate9 = [
-      { hole:1, par:4, strokeIndex:7 },{ hole:2, par:3, strokeIndex:9 },{ hole:3, par:4, strokeIndex:1 },{ hole:4, par:4, strokeIndex:5 },
-      { hole:5, par:5, strokeIndex:3 },{ hole:6, par:3, strokeIndex:8 },{ hole:7, par:4, strokeIndex:2 },{ hole:8, par:4, strokeIndex:6 },{ hole:9, par:4, strokeIndex:4 }
-    ];
-    const yvelinesChenes = [
-      { hole:1, par:4, strokeIndex:17 },{ hole:2, par:4, strokeIndex:13 },{ hole:3, par:4, strokeIndex:7 },{ hole:4, par:3, strokeIndex:9 },
-      { hole:5, par:4, strokeIndex:3 },{ hole:6, par:5, strokeIndex:11 },{ hole:7, par:4, strokeIndex:15 },{ hole:8, par:5, strokeIndex:1 },
-      { hole:9, par:3, strokeIndex:5 },{ hole:10, par:4, strokeIndex:4 },{ hole:11, par:3, strokeIndex:16 },{ hole:12, par:4, strokeIndex:2 },
-      { hole:13, par:5, strokeIndex:12 },{ hole:14, par:3, strokeIndex:10 },{ hole:15, par:4, strokeIndex:6 },{ hole:16, par:4, strokeIndex:18 },
-      { hole:17, par:4, strokeIndex:8 },{ hole:18, par:5, strokeIndex:14 }
-    ];
-    const yvelinesTilleuls = [
-      { hole:1, par:3, strokeIndex:5 },{ hole:2, par:4, strokeIndex:7 },{ hole:3, par:3, strokeIndex:9 },{ hole:4, par:3, strokeIndex:3 },
-      { hole:5, par:3, strokeIndex:6 },{ hole:6, par:4, strokeIndex:8 },{ hole:7, par:4, strokeIndex:1 },{ hole:8, par:4, strokeIndex:2 },{ hole:9, par:3, strokeIndex:4 }
-    ];
-    const albatros = [
-      { hole:1, par:4, strokeIndex:4 },{ hole:2, par:3, strokeIndex:6 },{ hole:3, par:5, strokeIndex:12 },{ hole:4, par:4, strokeIndex:8 },
-      { hole:5, par:4, strokeIndex:16 },{ hole:6, par:4, strokeIndex:18 },{ hole:7, par:4, strokeIndex:2 },{ hole:8, par:3, strokeIndex:14 },
-      { hole:9, par:5, strokeIndex:10 },{ hole:10, par:4, strokeIndex:9 },{ hole:11, par:3, strokeIndex:17 },{ hole:12, par:4, strokeIndex:7 },
-      { hole:13, par:4, strokeIndex:3 },{ hole:14, par:5, strokeIndex:11 },{ hole:15, par:4, strokeIndex:1 },{ hole:16, par:3, strokeIndex:13 },
-      { hole:17, par:4, strokeIndex:5 },{ hole:18, par:5, strokeIndex:15 }
-    ];
-    const medocVignes = [
-      { hole:1, par:4, strokeIndex:4 },{ hole:2, par:3, strokeIndex:12 },{ hole:3, par:4, strokeIndex:2 },{ hole:4, par:5, strokeIndex:6 },
-      { hole:5, par:3, strokeIndex:8 },{ hole:6, par:5, strokeIndex:16 },{ hole:7, par:4, strokeIndex:14 },{ hole:8, par:4, strokeIndex:10 },
-      { hole:9, par:3, strokeIndex:18 },{ hole:10, par:4, strokeIndex:13 },{ hole:11, par:5, strokeIndex:3 },{ hole:12, par:4, strokeIndex:11 },
-      { hole:13, par:3, strokeIndex:15 },{ hole:14, par:4, strokeIndex:9 },{ hole:15, par:4, strokeIndex:1 },{ hole:16, par:5, strokeIndex:7 },
-      { hole:17, par:3, strokeIndex:17 },{ hole:18, par:4, strokeIndex:5 }
-    ];
-    const terreBlancheChateau = [
-      { hole:1, par:5, strokeIndex:17 },{ hole:2, par:3, strokeIndex:11 },{ hole:3, par:4, strokeIndex:1 },{ hole:4, par:4, strokeIndex:3 },
-      { hole:5, par:4, strokeIndex:7 },{ hole:6, par:5, strokeIndex:5 },{ hole:7, par:3, strokeIndex:15 },{ hole:8, par:4, strokeIndex:13 },
-      { hole:9, par:4, strokeIndex:9 },{ hole:10, par:4, strokeIndex:2 },{ hole:11, par:5, strokeIndex:16 },{ hole:12, par:4, strokeIndex:14 },
-      { hole:13, par:3, strokeIndex:12 },{ hole:14, par:5, strokeIndex:4 },{ hole:15, par:4, strokeIndex:6 },{ hole:16, par:3, strokeIndex:18 },
-      { hole:17, par:4, strokeIndex:10 },{ hole:18, par:4, strokeIndex:8 }
-    ];
-
-    function cloneHoleData(template) { return template.map(h => ({ hole:h.hole, par:h.par, strokeIndex:h.strokeIndex })); }
-
-    const coursesData = [
-      {
-        clubId:"golf-des-yvelines", clubName:"Golf des Yvelines", region:"Île-de-France", city:"La Queue-lez-Yvelines", defaultSortOrder:1,
-        courses:[
-          { courseId:"les-chenes", courseName:"Les Chênes", holes:18, defaultCourse:true, tees:[
-            { teeId:"yvl-chenes-h-blanc", teeName:"Blanc", gender:"Homme", parTotal:72, slope:136, courseRating:73.4, holeData:cloneHoleData(yvelinesChenes) },
-            { teeId:"yvl-chenes-h-jaune", teeName:"Jaune", gender:"Homme", parTotal:72, slope:128, courseRating:71.5, holeData:cloneHoleData(yvelinesChenes) },
-            { teeId:"yvl-chenes-f-bleu", teeName:"Bleu", gender:"Femme", parTotal:72, slope:134, courseRating:75.3, holeData:cloneHoleData(yvelinesChenes) },
-            { teeId:"yvl-chenes-f-rouge", teeName:"Rouge", gender:"Femme", parTotal:72, slope:124, courseRating:71.8, holeData:cloneHoleData(yvelinesChenes) }
-          ] },
-          { courseId:"les-tilleuls", courseName:"Les Tilleuls", holes:9, defaultCourse:false, tees:[
-            { teeId:"yvl-tilleuls-h-jaune", teeName:"Jaune", gender:"Homme", parTotal:31, slope:114, courseRating:34.8, holeData:cloneHoleData(yvelinesTilleuls) },
-            { teeId:"yvl-tilleuls-f-rouge", teeName:"Rouge", gender:"Femme", parTotal:31, slope:110, courseRating:35.6, holeData:cloneHoleData(yvelinesTilleuls) }
-          ] }
-        ]
-      },
-      {
-        clubId:"golf-national", clubName:"Le Golf National", region:"Île-de-France", city:"Guyancourt", defaultSortOrder:2,
-        courses:[{ courseId:"albatros", courseName:"L'Albatros", holes:18, defaultCourse:true, tees:[
-          { teeId:"nat-h-blanc", teeName:"Blanc", gender:"Homme", parTotal:72, slope:155, courseRating:73.8, holeData:cloneHoleData(albatros) },
-          { teeId:"nat-h-jaune", teeName:"Jaune", gender:"Homme", parTotal:72, slope:141, courseRating:71.6, holeData:cloneHoleData(albatros) },
-          { teeId:"nat-f-bleu", teeName:"Bleu", gender:"Femme", parTotal:72, slope:148, courseRating:75.1, holeData:cloneHoleData(albatros) },
-          { teeId:"nat-f-rouge", teeName:"Rouge", gender:"Femme", parTotal:72, slope:141, courseRating:74.2, holeData:cloneHoleData(albatros) }
-        ] }]
-      },
-      {
-        clubId:"sqy-bluegreen", clubName:"Golf Bluegreen Saint-Quentin-en-Yvelines", region:"Île-de-France", city:"Trappes", defaultSortOrder:3,
-        courses:[{ courseId:"parcours-bleu", courseName:"Parcours Bleu", holes:18, defaultCourse:true, tees:[
-          { teeId:"sqy-h-blanc", teeName:"Blanc", gender:"Homme", parTotal:72, slope:136, courseRating:73.8, holeData:cloneHoleData(holeTemplate18) },
-          { teeId:"sqy-h-jaune", teeName:"Jaune", gender:"Homme", parTotal:72, slope:130, courseRating:72.2, holeData:cloneHoleData(holeTemplate18) },
-          { teeId:"sqy-f-bleu", teeName:"Bleu", gender:"Femme", parTotal:72, slope:129, courseRating:74.5, holeData:cloneHoleData(holeTemplate18) },
-          { teeId:"sqy-f-rouge", teeName:"Rouge", gender:"Femme", parTotal:72, slope:123, courseRating:72.7, holeData:cloneHoleData(holeTemplate18) }
-        ] }]
-      },
-      {
-        clubId:"terre-blanche", clubName:"Terre Blanche Hotel Spa Golf Resort", region:"Provence-Alpes-Côte d’Azur", city:"Tourrettes", defaultSortOrder:4,
-        courses:[{ courseId:"le-chateau", courseName:"Le Château", holes:18, defaultCourse:true, tees:[
-          { teeId:"tb-h-blanc", teeName:"Blanc", gender:"Homme", parTotal:72, slope:149, courseRating:77.4, holeData:cloneHoleData(terreBlancheChateau) },
-          { teeId:"tb-h-jaune", teeName:"Jaune", gender:"Homme", parTotal:72, slope:146, courseRating:74.8, holeData:cloneHoleData(terreBlancheChateau) },
-          { teeId:"tb-f-bleu", teeName:"Bleu", gender:"Femme", parTotal:72, slope:150, courseRating:79.6, holeData:cloneHoleData(terreBlancheChateau) },
-          { teeId:"tb-f-rouge", teeName:"Rouge", gender:"Femme", parTotal:72, slope:138, courseRating:75.9, holeData:cloneHoleData(terreBlancheChateau) }
-        ] }]
-      },
-      {
-        clubId:"golf-du-medoc", clubName:"Golf du Médoc Resort", region:"Nouvelle-Aquitaine", city:"Le Pian-Médoc", defaultSortOrder:5,
-        courses:[{ courseId:"les-vignes", courseName:"Les Vignes", holes:18, defaultCourse:true, tees:[
-          { teeId:"medoc-h-blanc", teeName:"Blanc", gender:"Homme", parTotal:71, slope:129, courseRating:72.7, holeData:cloneHoleData(medocVignes) },
-          { teeId:"medoc-h-jaune", teeName:"Jaune", gender:"Homme", parTotal:71, slope:126, courseRating:69.7, holeData:cloneHoleData(medocVignes) },
-          { teeId:"medoc-f-bleu", teeName:"Bleu", gender:"Femme", parTotal:71, slope:126, courseRating:72.0, holeData:cloneHoleData(medocVignes) },
-          { teeId:"medoc-f-rouge", teeName:"Rouge", gender:"Femme", parTotal:71, slope:119, courseRating:69.0, holeData:cloneHoleData(medocVignes) }
-        ] }]
-      }
-    ];
-
-    function getSortedClubs(){return [...coursesData].sort((a,b)=>(a.defaultSortOrder??999)-(b.defaultSortOrder??999)||a.clubName.localeCompare(b.clubName));}
-    function getRegions(){return ["Toutes les régions", ...new Set(coursesData.map(c=>c.region))];}
-    function getClubById(clubId){return coursesData.find(c=>c.clubId===clubId)||null;}
-    function getCourseById(clubId,courseId){return getClubById(clubId)?.courses.find(c=>c.courseId===courseId)||null;}
-    function getTeeById(clubId,courseId,teeId){return getCourseById(clubId,courseId)?.tees.find(t=>t.teeId===teeId)||null;}
-    function getDefaultClub(){return getClubById("golf-des-yvelines") || getSortedClubs()[0] || null;}
-    function getDefaultCourse(clubId){const club=getClubById(clubId); return club?.courses.find(c=>c.defaultCourse)||club?.courses[0]||null;}
-    function getDefaultTeeForGender(clubId,courseId,gender){const course=getCourseById(clubId,courseId); if(!course) return null; const preferred=course.tees.filter(t=>t.gender===gender); const pool=preferred.length?preferred:course.tees; return pool.find(t=>/jaune|bleu|rouge/i.test(t.teeName))||pool[0]||null;}
-    function filterClubsByRegionAndQuery(region,query){return getSortedClubs().filter(club=>{const regionOk=!region||region==="Toutes les régions"||club.region===region; const q=(query||"").trim(); const queryOk=!q||textIncludes(`${club.clubName} ${club.city} ${club.region}`, q); return regionOk&&queryOk;});}
-
-    function calculateCourseHandicap(handicapIndex,slope,courseRating,par){return [handicapIndex,slope,courseRating,par].every(Number.isFinite)?(handicapIndex*slope/113)+(courseRating-par):null;}
-    function calculatePlayingHandicap(unrounded){return Number.isFinite(unrounded)?roundHalfUp(unrounded):null;}
-    function calculateMatchStrokeDifference(playingA,playingB){
-      if(![playingA,playingB].every(Number.isFinite)) return {playerAReceives:0, playerBReceives:0, difference:0, scratchPlayer:null};
-      const rawDifference=Math.abs(playingB-playingA); const allowanceDifference=roundHalfUp(rawDifference*0.75);
-      if(allowanceDifference===0) return {playerAReceives:0, playerBReceives:0, difference:0, scratchPlayer:null};
-      if(playingA<playingB) return {playerAReceives:0, playerBReceives:allowanceDifference, difference:allowanceDifference, scratchPlayer:"A"};
-      if(playingB<playingA) return {playerAReceives:allowanceDifference, playerBReceives:0, difference:allowanceDifference, scratchPlayer:"B"};
-      return {playerAReceives:0, playerBReceives:0, difference:0, scratchPlayer:null};
-    }
-    function distributeStrokesAcrossHoles(holeData, strokesToReceive){
-      const out={}; (holeData||[]).forEach(h=>out[h.hole]=0);
-      if(!Number.isFinite(strokesToReceive)||strokesToReceive<=0||!holeData?.length) return out;
-      const ordered=[...holeData].sort((a,b)=>a.strokeIndex-b.strokeIndex);
-      const cycles=Math.floor(strokesToReceive/ordered.length); const remainder=strokesToReceive%ordered.length;
-      ordered.forEach(h=>out[h.hole]=cycles); for(let i=0;i<remainder;i+=1) out[ordered[i].hole]+=1; return out;
-    }
-    function evaluateHoleResult(netA,netB,playerAName,playerBName){
-      if(!Number.isFinite(netA)||!Number.isFinite(netB)) return {winner:null,text:"—",className:""};
-      if(netA<netB) return {winner:"A", text:`${playerAName} gagne le trou`, className:"result-a"};
-      if(netB<netA) return {winner:"B", text:`${playerBName} gagne le trou`, className:"result-b"};
-      return {winner:"HALF", text:"Trou partagé", className:"result-half"};
-    }
-    function calculateRunningMatchStatus(evaluatedRows,totalHoles,playerAName,playerBName){
-      let balance=0, isClosed=false, finalResult="", closedOnHole=null; const rows=[];
-      evaluatedRows.forEach((row,index)=>{
-        if(row.result.winner==="A") balance+=1; if(row.result.winner==="B") balance-=1;
-        const holesPlayed=index+1; const holesRemaining=totalHoles-holesPlayed; const absBalance=Math.abs(balance);
-        let statusText="Square"; if(balance>0) statusText=`${playerAName} ${absBalance} up`; if(balance<0) statusText=`${playerBName} ${absBalance} up`;
-        if(!isClosed && absBalance>holesRemaining){isClosed=true; closedOnHole=row.hole; finalResult=`${balance>0?playerAName:playerBName} gagne ${absBalance}&${holesRemaining}`; statusText=finalResult;}
-        else if(!isClosed && holesPlayed===totalHoles && balance===0){finalResult="Match partagé"; statusText=finalResult;}
-        else if(!isClosed && holesPlayed===totalHoles && balance!==0){finalResult=`${balance>0?playerAName:playerBName} gagne ${absBalance} up`; statusText=finalResult;}
-        rows.push({hole:row.hole,statusText,balance,holesRemaining,isClosed,finalResult});
-      });
-      return {rows,isClosed,finalResult,closedOnHole,finalBalance:balance};
-    }
-
-    function buildHoleScores(course){const holes=course?.tees?.[0]?.holeData||[]; return holes.map(h=>({hole:h.hole,playerAGross:null,playerBGross:null,playerAReceived:0,playerBReceived:0,playerANet:null,playerBNet:null,result:{winner:null,text:"—",className:""},runningStatus:"—"}));}
-
-    const defaultClub = getDefaultClub();
-    const defaultCourse = getDefaultCourse(defaultClub.clubId);
-    const appState = {
-      selectedClubId: defaultClub.clubId,
-      selectedCourseId: defaultCourse.courseId,
-      selectedRegion: "Toutes les régions",
-      searchQuery: "",
-      settings: { continueAfterMatchClosed:false, theme:"light" },
-      players: {
-        A: { name:"Joueur A", gender:"Homme", handicapIndex:14.2, teeId:getDefaultTeeForGender(defaultClub.clubId,defaultCourse.courseId,"Homme")?.teeId||"", unroundedCourseHandicap:null, roundedCourseHandicap:null, playingHandicap:null, matchStrokesReceived:0, holeStrokesMap:{}, validation:{} },
-        B: { name:"Joueur B", gender:"Homme", handicapIndex:18.7, teeId:getDefaultTeeForGender(defaultClub.clubId,defaultCourse.courseId,"Homme")?.teeId||"", unroundedCourseHandicap:null, roundedCourseHandicap:null, playingHandicap:null, matchStrokesReceived:0, holeStrokesMap:{}, validation:{} }
-      },
-      holeScores: buildHoleScores(defaultCourse),
-      match: { statusText:"Square", finalResult:"", isClosed:false, closedOnHole:null, balance:0, holesPlayed:0, holesRemaining:defaultCourse.holes },
-      live: { started:false, bufferA:"", bufferB:"" }
-    };
-
-    function getSelectedCourse(){return getCourseById(appState.selectedClubId, appState.selectedCourseId);} 
-    function getSelectedTee(playerKey){return getTeeById(appState.selectedClubId, appState.selectedCourseId, appState.players[playerKey].teeId);} 
-    function getPlayerDisplayName(playerKey){return (appState.players[playerKey].name||"").trim()||`Joueur ${playerKey}`;}
-    function validatePlayer(playerKey){
-      const player=appState.players[playerKey]; player.validation={};
-      if(!Number.isFinite(player.handicapIndex)) player.validation.handicapIndex="Renseignez un index valide.";
-      else if(player.handicapIndex < HANDICAP_LIMITS.min || player.handicapIndex > HANDICAP_LIMITS.max) player.validation.handicapIndex=`L’index doit être compris entre ${HANDICAP_LIMITS.min} et ${HANDICAP_LIMITS.max}.`;
-      if(!player.teeId) player.validation.teeId="Choisissez un départ.";
-      return Object.keys(player.validation).length===0;
-    }
-    function recomputePlayer(playerKey){
-      const player=appState.players[playerKey]; const tee=getSelectedTee(playerKey);
-      if(!tee || !Number.isFinite(player.handicapIndex)){player.unroundedCourseHandicap=null;player.roundedCourseHandicap=null;player.playingHandicap=null;return;}
-      player.handicapIndex=clamp(player.handicapIndex,HANDICAP_LIMITS.min,HANDICAP_LIMITS.max);
-      const exact=calculateCourseHandicap(player.handicapIndex, tee.slope, tee.courseRating, tee.parTotal);
-      player.unroundedCourseHandicap=exact; player.roundedCourseHandicap=roundHalfUp(exact); player.playingHandicap=calculatePlayingHandicap(exact);
-    }
-    function recomputeMatch(){
-      PLAYER_KEYS.forEach(recomputePlayer);
-      const course=getSelectedCourse(); if(!course) return;
-      if(appState.holeScores.length !== course.holes){
-        const prev=deepClone(appState.holeScores); appState.holeScores=buildHoleScores(course);
-        appState.holeScores.forEach((row,idx)=>{if(prev[idx]){row.playerAGross=prev[idx].playerAGross; row.playerBGross=prev[idx].playerBGross;}});
-      }
-      const diff=calculateMatchStrokeDifference(appState.players.A.playingHandicap, appState.players.B.playingHandicap);
-      appState.players.A.matchStrokesReceived=diff.playerAReceives; appState.players.B.matchStrokesReceived=diff.playerBReceives;
-      const holeData=course.tees[0]?.holeData||[];
-      appState.players.A.holeStrokesMap=distributeStrokesAcrossHoles(holeData, diff.playerAReceives);
-      appState.players.B.holeStrokesMap=distributeStrokesAcrossHoles(holeData, diff.playerBReceives);
-      const evaluated=[];
-      appState.holeScores.forEach((row,index)=>{
-        const hole=holeData[index]; const receivedA=appState.players.A.holeStrokesMap[row.hole]||0; const receivedB=appState.players.B.holeStrokesMap[row.hole]||0;
-        row.playerAReceived=receivedA; row.playerBReceived=receivedB;
-        row.playerANet=calculateHoleNetScore(row.playerAGross, receivedA, hole?.par); row.playerBNet=calculateHoleNetScore(row.playerBGross, receivedB, hole?.par);
-        row.result=evaluateHoleResult(row.playerANet, row.playerBNet, getPlayerDisplayName("A"), getPlayerDisplayName("B"));
-        if(Number.isFinite(row.playerANet) && Number.isFinite(row.playerBNet)) evaluated.push({hole:row.hole, result:row.result});
-      });
-      const status=calculateRunningMatchStatus(evaluated, course.holes, getPlayerDisplayName("A"), getPlayerDisplayName("B"));
-      const statusMap=new Map(status.rows.map(item=>[item.hole,item]));
-      appState.holeScores.forEach(row=>{row.runningStatus=statusMap.get(row.hole)?.statusText || (row.result.winner ? appState.match.statusText : "—");});
-      appState.match.statusText=status.rows.at(-1)?.statusText || "Square";
-      appState.match.finalResult=status.finalResult || "";
-      appState.match.isClosed=status.isClosed;
-      appState.match.closedOnHole=status.closedOnHole || null;
-      appState.match.balance=status.finalBalance || 0;
-      appState.match.holesPlayed=status.rows.length;
-      appState.match.holesRemaining=Math.max(course.holes - status.rows.length, 0);
-    }
-
-    function isHoleComplete(row){return isScoreEntered(row?.playerAGross)&&isScoreEntered(row?.playerBGross);} 
-    function getStopAfterHole(){return appState.match.isClosed && !appState.settings.continueAfterMatchClosed ? appState.match.closedOnHole : null;}
-    function getCurrentLiveHoleIndex(){
-      const course=getSelectedCourse(); if(!course || !appState.holeScores.length) return 0;
-      const stopAfter=getStopAfterHole();
-      for(let i=0;i<appState.holeScores.length;i+=1){ const row=appState.holeScores[i]; if(stopAfter && row.hole>stopAfter) break; if(!isHoleComplete(row)) return i; }
-      if(stopAfter) return Math.max(0, Math.min(stopAfter-1, appState.holeScores.length-1));
-      return Math.max(0, appState.holeScores.length-1);
-    }
-    function getLastCompletedHoleIndex(){for(let i=appState.holeScores.length-1;i>=0;i-=1){if(isHoleComplete(appState.holeScores[i])) return i;} return -1;}
-    function holeResultShortLabel(row){if(row?.result?.winner==="A") return getPlayerDisplayName("A"); if(row?.result?.winner==="B") return getPlayerDisplayName("B"); if(row?.result?.winner==="HALF") return "Partagé"; return "—";}
-
-    function serializeState(){return JSON.stringify({version:APP_VERSION, savedAt:new Date().toISOString(), state:appState}, null, 2);} 
-    function deserializeState(raw){const parsed=typeof raw==="string"?JSON.parse(raw):raw; if(!parsed||typeof parsed!=="object"||!parsed.state) throw new Error("Format JSON invalide."); return parsed;}
-    function autoSaveState(){try{localStorage.setItem(STORAGE_KEY, serializeState());}catch(error){debugLog("Autosave impossible", error);}}
-    function saveState(){autoSaveState(); toast("Sauvegarde locale effectuée.");}
-    function loadStateFromStorage(){const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return null; return deserializeState(raw);} 
-    function exportJson(){const blob=new Blob([serializeState()], {type:"application/json;charset=utf-8"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`championnat-club-net-${new Date().toISOString().slice(0,10)}.json`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); toast("Export JSON téléchargé.");}
-    function importJson(file){const reader=new FileReader(); reader.onload=()=>{try{const parsed=deserializeState(reader.result); hydrateState(parsed.state); autoSaveState(); toast("Match importé avec succès.");}catch(error){toast(error.message||"Import impossible.", true);}}; reader.onerror=()=>toast("Lecture du fichier impossible.", true); reader.readAsText(file, "utf-8");}
-    function resetState(){
-      const club=getDefaultClub(); const course=getDefaultCourse(club.clubId);
-      appState.selectedClubId=club.clubId; appState.selectedCourseId=course.courseId; appState.selectedRegion="Toutes les régions"; appState.searchQuery=""; appState.settings.continueAfterMatchClosed=false;
-      appState.players.A={name:"Joueur A", gender:"Homme", handicapIndex:14.2, teeId:getDefaultTeeForGender(club.clubId,course.courseId,"Homme")?.teeId||"", unroundedCourseHandicap:null, roundedCourseHandicap:null, playingHandicap:null, matchStrokesReceived:0, holeStrokesMap:{}, validation:{}};
-      appState.players.B={name:"Joueur B", gender:"Homme", handicapIndex:18.7, teeId:getDefaultTeeForGender(club.clubId,course.courseId,"Homme")?.teeId||"", unroundedCourseHandicap:null, roundedCourseHandicap:null, playingHandicap:null, matchStrokesReceived:0, holeStrokesMap:{}, validation:{}};
-      appState.holeScores=buildHoleScores(course); appState.match={statusText:"Square", finalResult:"", isClosed:false, closedOnHole:null, balance:0, holesPlayed:0, holesRemaining:course.holes}; appState.live={started:false, bufferA:"", bufferB:""};
-      recomputeMatch(); autoSaveState(); render();
-    }
-    function hydrateState(newState){
-      const incoming=deepClone(newState);
-      appState.selectedClubId=incoming.selectedClubId || getDefaultClub().clubId;
-      appState.selectedCourseId=incoming.selectedCourseId || getDefaultCourse(appState.selectedClubId)?.courseId || "";
-      appState.selectedRegion=incoming.selectedRegion || "Toutes les régions";
-      appState.searchQuery=incoming.searchQuery || "";
-      appState.settings={continueAfterMatchClosed:Boolean(incoming.settings?.continueAfterMatchClosed), theme:incoming.settings?.theme==="dark"?"dark":"light"};
-      PLAYER_KEYS.forEach(key=>{
-        const gender=incoming.players?.[key]?.gender || "Homme";
-        appState.players[key]={
-          name:incoming.players?.[key]?.name || `Joueur ${key}`,
-          gender,
-          handicapIndex:parseHandicapIndexValue(incoming.players?.[key]?.handicapIndex),
-          teeId:incoming.players?.[key]?.teeId || getDefaultTeeForGender(appState.selectedClubId, appState.selectedCourseId, gender)?.teeId || "",
-          unroundedCourseHandicap:null, roundedCourseHandicap:null, playingHandicap:null, matchStrokesReceived:0, holeStrokesMap:{}, validation:{}
-        };
-      });
-      const course=getSelectedCourse(); appState.holeScores=buildHoleScores(course);
-      if(Array.isArray(incoming.holeScores)) appState.holeScores.forEach((row,idx)=>{const src=incoming.holeScores[idx]; if(!src) return; row.playerAGross=sanitizeScoreValue(src.playerAGross); row.playerBGross=sanitizeScoreValue(src.playerBGross);});
-      appState.live={started:Boolean(incoming.live?.started), bufferA:String(incoming.live?.bufferA ?? ""), bufferB:String(incoming.live?.bufferB ?? "")};
-      document.body.dataset.theme=appState.settings.theme; recomputeMatch(); render();
-    }
-
-    const dom = {
-      body:document.body, searchInput:document.getElementById("searchInput"), regionSelect:document.getElementById("regionSelect"), clubSelect:document.getElementById("clubSelect"), courseSelect:document.getElementById("courseSelect"), continueAfterClosed:document.getElementById("continueAfterClosed"),
-      courseSummaryText:document.getElementById("courseSummaryText"), courseMeta:document.getElementById("courseMeta"), courseMetrics:document.getElementById("courseMetrics"),
-      playerAContainer:document.getElementById("playerAContainer"), playerBContainer:document.getElementById("playerBContainer"), scorecardBody:document.getElementById("scorecardBody"),
-      bannerTitle:document.getElementById("bannerTitle"), bannerSubtitle:document.getElementById("bannerSubtitle"), bannerFinal:document.getElementById("bannerFinal"), bannerLeader:document.getElementById("bannerLeader"), bannerPlayed:document.getElementById("bannerPlayed"), bannerRemaining:document.getElementById("bannerRemaining"),
-      newMatchBtn:document.getElementById("newMatchBtn"), saveBtn:document.getElementById("saveBtn"), loadBtn:document.getElementById("loadBtn"), exportBtn:document.getElementById("exportBtn"), themeBtn:document.getElementById("themeBtn"), jsonFileInput:document.getElementById("jsonFileInput"),
-      liveStateBadge:document.getElementById("liveStateBadge"), liveCurrentHoleBadge:document.getElementById("liveCurrentHoleBadge"), liveSummaryMetrics:document.getElementById("liveSummaryMetrics"), liveScoreLabelA:document.getElementById("liveScoreLabelA"), liveScoreLabelB:document.getElementById("liveScoreLabelB"), liveScoreA:document.getElementById("liveScoreA"), liveScoreB:document.getElementById("liveScoreB"), liveScoreHelpA:document.getElementById("liveScoreHelpA"), liveScoreHelpB:document.getElementById("liveScoreHelpB"), liveValidateBtn:document.getElementById("liveValidateBtn"), liveUndoBtn:document.getElementById("liveUndoBtn"), shareResultBtn:document.getElementById("shareResultBtn"), liveError:document.getElementById("liveError"), liveScorecardBody:document.getElementById("liveScorecardBody")
-    };
-
-    function metricHtml(label,value,small=false){return `<div class="metric"><div class="metric-label">${label}</div><div class="metric-value ${small?"small":""}">${value}</div></div>`;}
-    function renderRegionSelect(){const regions=getRegions(); dom.regionSelect.innerHTML=regions.map(r=>`<option value="${r}">${r}</option>`).join(""); dom.regionSelect.value=appState.selectedRegion;}
-    function renderClubSelect(){const filtered=filterClubsByRegionAndQuery(appState.selectedRegion, appState.searchQuery); if(!filtered.some(c=>c.clubId===appState.selectedClubId)){const fb=filtered[0]||getDefaultClub(); appState.selectedClubId=fb.clubId; appState.selectedCourseId=getDefaultCourse(fb.clubId)?.courseId||"";} dom.clubSelect.innerHTML=filtered.map(c=>`<option value="${c.clubId}">${c.clubName} — ${c.city}</option>`).join(""); dom.clubSelect.value=appState.selectedClubId;}
-    function renderCourseSelect(){const club=getClubById(appState.selectedClubId); const courses=club?.courses||[]; if(!courses.some(c=>c.courseId===appState.selectedCourseId)) appState.selectedCourseId=courses[0]?.courseId||""; dom.courseSelect.innerHTML=courses.map(c=>`<option value="${c.courseId}">${c.courseName} — ${c.holes} trous</option>`).join(""); dom.courseSelect.value=appState.selectedCourseId;}
-    function renderCourseSummary(){
-      const club=getClubById(appState.selectedClubId); const course=getSelectedCourse();
-      if(!club||!course){dom.courseSummaryText.textContent="Sélectionnez un parcours pour afficher ses détails."; dom.courseMeta.innerHTML=""; dom.courseMetrics.innerHTML=""; return;}
-      dom.courseSummaryText.textContent=`${club.clubName} — ${course.courseName}, ${club.city} (${club.region}).`;
-      const teeSummary=course.tees.map(t=>`${t.teeName} ${t.gender==="Homme"?"H":"F"}`).join(" · ");
-      dom.courseMeta.innerHTML=`<span class="course-pill">${course.holes} trous</span><span class="course-pill">Départs : ${teeSummary}</span>`;
-      const pars=course.tees.map(t=>t.parTotal), slopes=course.tees.map(t=>t.slope), ratings=course.tees.map(t=>t.courseRating);
-      dom.courseMetrics.innerHTML=[metricHtml("Par", `${Math.min(...pars)} à ${Math.max(...pars)}`), metricHtml("Slope", `${Math.min(...slopes)} à ${Math.max(...slopes)}`), metricHtml("Course Rating", `${Math.min(...ratings).toFixed(1)} à ${Math.max(...ratings).toFixed(1)}`), metricHtml("Départs", String(course.tees.length))].join("");
-    }
-    function buildPlayerCard(playerKey){
-      const player=appState.players[playerKey]; const course=getSelectedCourse(); validatePlayer(playerKey);
-      const tees=course?.tees||[]; const orderedTees=tees.filter(t=>t.gender===player.gender).concat(tees.filter(t=>t.gender!==player.gender)).filter((t,idx,arr)=>arr.findIndex(x=>x.teeId===t.teeId)===idx); const tee=getSelectedTee(playerKey);
-      return `
-        <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px;"><div><h2>Joueur ${playerKey}</h2><p class="subtitle">Configurez le profil et le départ utilisé.</p></div><span class="badge">${playerKey}</span></div>
-        <div class="grid grid-2">
-          <div class="field"><label for="player-${playerKey}-name">Nom</label><input id="player-${playerKey}-name" data-role="player-name" data-player="${playerKey}" type="text" value="${String(player.name||"").replace(/"/g,'&quot;')}" placeholder="Joueur ${playerKey}" /></div>
-          <div class="field"><label for="player-${playerKey}-gender">Sexe</label><select id="player-${playerKey}-gender" data-role="player-gender" data-player="${playerKey}"><option value="Homme" ${player.gender==="Homme"?"selected":""}>Homme</option><option value="Femme" ${player.gender==="Femme"?"selected":""}>Femme</option></select></div>
-          <div class="field"><label for="player-${playerKey}-index">Handicap Index</label><input id="player-${playerKey}-index" data-role="player-index" data-player="${playerKey}" type="text" inputmode="decimal" value="${player.handicapIndex ?? ""}" placeholder="Ex. 14.2 ou 14,2" /><div class="error">${player.validation.handicapIndex||""}</div></div>
-          <div class="field"><label for="player-${playerKey}-tee">Départ</label><select id="player-${playerKey}-tee" data-role="player-tee" data-player="${playerKey}">${orderedTees.map(opt=>`<option value="${opt.teeId}" ${opt.teeId===player.teeId?"selected":""}>${opt.teeName} — ${opt.gender}</option>`).join("")}</select><div class="error">${player.validation.teeId||""}</div></div>
-        </div>
-        <div class="summary-grid" style="margin-top:14px;">${metricHtml("Index", Number.isFinite(player.handicapIndex)?formatOneDecimal(player.handicapIndex):"—")}${metricHtml("Slope", tee?tee.slope:"—")}${metricHtml("Course Rating", tee?tee.courseRating.toFixed(1):"—")}${metricHtml("Par", tee?tee.parTotal:"—")}${metricHtml("HC parcours exact", Number.isFinite(player.unroundedCourseHandicap)?formatOneDecimal(player.unroundedCourseHandicap):"—")}${metricHtml("HC parcours arrondi", Number.isFinite(player.roundedCourseHandicap)?formatInteger(player.roundedCourseHandicap):"—")}${metricHtml("HC de jeu", Number.isFinite(player.playingHandicap)?formatInteger(player.playingHandicap):"—")}${metricHtml("Coups reçus match", formatInteger(player.matchStrokesReceived))}</div>`;
-    }
-    function renderPlayers(){dom.playerAContainer.innerHTML=buildPlayerCard("A"); dom.playerBContainer.innerHTML=buildPlayerCard("B");}
-    function renderScorecard(){
-      const course=getSelectedCourse(); const holes=course?.tees?.[0]?.holeData||[]; const stopAfter=appState.match.isClosed && !appState.settings.continueAfterMatchClosed ? appState.match.closedOnHole : null;
-      dom.scorecardBody.innerHTML=appState.holeScores.map((row,idx)=>{const hole=holes[idx]; const disabled=stopAfter && row.hole>stopAfter; const resultClass=row.result.className||""; return `<tr class="${disabled?"closed-row":""}"><td>${row.hole}</td><td>${hole?.par??"—"}</td><td>${hole?.strokeIndex??"—"}</td><td><input class="score-input" data-role="hole-score" data-player="A" data-hole="${row.hole}" type="text" inputmode="text" pattern="[0-9xX]*" value="${formatScoreDisplay(row.playerAGross)}" ${disabled?"disabled":""} /></td><td><input class="score-input" data-role="hole-score" data-player="B" data-hole="${row.hole}" type="text" inputmode="text" pattern="[0-9xX]*" value="${formatScoreDisplay(row.playerBGross)}" ${disabled?"disabled":""} /></td><td>${row.playerAReceived??0}</td><td>${row.playerBReceived??0}</td><td>${Number.isFinite(row.playerANet)?row.playerANet:"—"}</td><td>${Number.isFinite(row.playerBNet)?row.playerBNet:"—"}</td><td class="${resultClass}">${row.result.text}</td><td>${row.runningStatus||"—"}</td></tr>`;}).join("");
-    }
-    function renderBanner(){const course=getSelectedCourse(); const holesCount=course?.holes||0; const leader=appState.match.balance>0?getPlayerDisplayName("A"):appState.match.balance<0?getPlayerDisplayName("B"):"Aucun"; dom.bannerTitle.textContent=appState.match.statusText||"Square"; dom.bannerSubtitle.textContent=appState.match.isClosed?`Match mathématiquement terminé au trou ${appState.match.closedOnHole}.`:appState.match.holesPlayed?"Le statut se met à jour automatiquement dès qu’un trou est complet.":"Aucun score complet saisi pour le moment."; dom.bannerFinal.textContent=`Résultat final : ${appState.match.finalResult||"—"}`; dom.bannerLeader.textContent=`Leader : ${leader}`; dom.bannerPlayed.textContent=`Trous joués : ${appState.match.holesPlayed}`; dom.bannerRemaining.textContent=`Restants : ${Math.max(holesCount-appState.match.holesPlayed,0)}`;}
-    function renderAllSelects(){dom.searchInput.value=appState.searchQuery; renderRegionSelect(); renderClubSelect(); renderCourseSelect(); dom.continueAfterClosed.checked=appState.settings.continueAfterMatchClosed; dom.themeBtn.textContent=appState.settings.theme==="dark"?"Mode clair":"Mode sombre"; document.body.dataset.theme=appState.settings.theme;}
-    function renderMobileLive(){
-      const course=getSelectedCourse(); const holes=course?.tees?.[0]?.holeData||[]; if(!course) return; const currentIdx=getCurrentLiveHoleIndex(); const row=appState.holeScores[currentIdx]; const hole=holes[currentIdx]; const completedRows=appState.holeScores.filter(isHoleComplete); const liveLocked=Boolean(appState.match.isClosed && !appState.settings.continueAfterMatchClosed && row && isHoleComplete(row));
-      dom.liveStateBadge.textContent=appState.match.finalResult?"Match terminé":appState.match.holesPlayed?"Partie en cours":"Saisie directe"; dom.liveCurrentHoleBadge.textContent=`Trou ${row?.hole||1} / ${course.holes}`;
-      dom.liveSummaryMetrics.innerHTML=[metricHtml("Statut", appState.match.statusText||"Square", true), metricHtml("Trous joués", String(appState.match.holesPlayed), true), metricHtml("Restants", String(appState.match.holesRemaining), true), metricHtml("Résultat", appState.match.finalResult||"—", true)].join("");
-      dom.liveScoreLabelA.textContent=`${getPlayerDisplayName("A")} — trou ${row?.hole||1}`; dom.liveScoreLabelB.textContent=`${getPlayerDisplayName("B")} — trou ${row?.hole||1}`; dom.liveScoreHelpA.textContent=`CR : ${row?.playerAReceived??0} • Par : ${hole?.par??"—"} • SI : ${hole?.strokeIndex??"—"}`; dom.liveScoreHelpB.textContent=`CR : ${row?.playerBReceived??0} • Par : ${hole?.par??"—"} • SI : ${hole?.strokeIndex??"—"}`;
-      dom.liveScoreA.value=appState.live.bufferA!==""?appState.live.bufferA:(row?formatScoreDisplay(row.playerAGross):""); dom.liveScoreB.value=appState.live.bufferB!==""?appState.live.bufferB:(row?formatScoreDisplay(row.playerBGross):"");
-      dom.liveScoreA.disabled=liveLocked; dom.liveScoreB.disabled=liveLocked; dom.liveValidateBtn.disabled=liveLocked; dom.liveError.textContent=liveLocked?"Le match est terminé. Vous pouvez partager le résultat en image.":"";
-      dom.liveScorecardBody.innerHTML=!completedRows.length?'<tr><td colspan="5" class="live-empty">Aucun trou validé pour le moment.</td></tr>':completedRows.map(item=>`<tr><td>${item.hole}</td><td>${formatScoreDisplay(item.playerAGross)}</td><td>${formatScoreDisplay(item.playerBGross)}</td><td class="${item.result.className||""}">${holeResultShortLabel(item)}</td><td>${item.runningStatus||"—"}</td></tr>`).join("");
-    }
-    function render(){renderAllSelects(); renderCourseSummary(); renderPlayers(); renderScorecard(); renderBanner(); renderMobileLive();}
-
-    function onClubOrCourseChange(){
-      const oldScores=deepClone(appState.holeScores); const course=getSelectedCourse(); appState.holeScores=buildHoleScores(course);
-      appState.holeScores.forEach((row,idx)=>{if(oldScores[idx]){row.playerAGross=oldScores[idx].playerAGross; row.playerBGross=oldScores[idx].playerBGross;}});
-      PLAYER_KEYS.forEach(playerKey=>{const stillValid=getTeeById(appState.selectedClubId, appState.selectedCourseId, appState.players[playerKey].teeId); if(!stillValid) appState.players[playerKey].teeId=getDefaultTeeForGender(appState.selectedClubId, appState.selectedCourseId, appState.players[playerKey].gender)?.teeId||"";});
-      appState.live.bufferA=""; appState.live.bufferB=""; appState.live.started=false; recomputeMatch(); render();
-    }
-
-    document.addEventListener("change", event => {
-      const el=event.target; if(!(el instanceof HTMLElement)) return; const role=el.dataset.role;
-      if(el===dom.regionSelect){appState.selectedRegion=dom.regionSelect.value; render(); return;}
-      if(el===dom.clubSelect){appState.selectedClubId=dom.clubSelect.value; appState.selectedCourseId=getDefaultCourse(appState.selectedClubId)?.courseId||""; onClubOrCourseChange(); return;}
-      if(el===dom.courseSelect){appState.selectedCourseId=dom.courseSelect.value; onClubOrCourseChange(); return;}
-      if(el===dom.continueAfterClosed){appState.settings.continueAfterMatchClosed=dom.continueAfterClosed.checked; render(); return;}
-      if(role==="player-name"){appState.players[el.dataset.player].name=el.value; recomputeMatch(); render(); return;}
-      if(role==="player-gender"){const playerKey=el.dataset.player; appState.players[playerKey].gender=el.value; appState.players[playerKey].teeId=getDefaultTeeForGender(appState.selectedClubId, appState.selectedCourseId, el.value)?.teeId||""; recomputeMatch(); render(); return;}
-      if(role==="player-index"){const playerKey=el.dataset.player; appState.players[playerKey].handicapIndex=parseHandicapIndexValue(el.value); recomputeMatch(); render(); return;}
-      if(role==="player-tee"){const playerKey=el.dataset.player; appState.players[playerKey].teeId=el.value; recomputeMatch(); render(); return;}
-      if(role==="hole-score"){
-        const playerKey=el.dataset.player; const holeNumber=Number(el.dataset.hole); const validation=parseScoreEntry(el.value);
-        if(!validation.valid){toast(validation.message, true); const row=appState.holeScores.find(item=>item.hole===holeNumber); el.value=formatScoreDisplay(playerKey==="A"?row?.playerAGross:row?.playerBGross); return;}
-        const row=appState.holeScores.find(item=>item.hole===holeNumber); if(!row) return; if(playerKey==="A") row.playerAGross=validation.parsed; if(playerKey==="B") row.playerBGross=validation.parsed; recomputeMatch(); render();
-      }
-    });
-    document.addEventListener("keydown", event => {
-      const el=event.target; if(!(el instanceof HTMLInputElement)) return; if(el.dataset.role!=="hole-score" || event.key!=="Enter") return; event.preventDefault();
-      const validation=parseScoreEntry(el.value); if(!validation.valid){toast(validation.message, true); return;} const holeNumber=Number(el.dataset.hole); const row=appState.holeScores.find(item=>item.hole===holeNumber); if(row){if(el.dataset.player==="A") row.playerAGross=validation.parsed; if(el.dataset.player==="B") row.playerBGross=validation.parsed; recomputeMatch(); render();}
-      const inputs=[...document.querySelectorAll('input[data-role="hole-score"]:not([disabled])')]; const idx=inputs.indexOf(el); if(inputs[idx+1]) inputs[idx+1].focus();
-    });
-
-    dom.searchInput.addEventListener("input", ()=>{appState.searchQuery=dom.searchInput.value; render();});
-    dom.newMatchBtn.addEventListener("click", ()=>{if(confirm("Toutes les saisies non sauvegardées seront perdues. Démarrer un nouveau match ?")){resetState(); toast("Nouveau match prêt.");}});
-    dom.saveBtn.addEventListener("click", saveState);
-    dom.loadBtn.addEventListener("click", ()=>{try{const saved=loadStateFromStorage(); if(!saved){toast("Aucune sauvegarde locale disponible.", true); return;} hydrateState(saved.state); toast("Sauvegarde locale chargée.");}catch(error){toast("La sauvegarde locale est corrompue.", true);}});
-    dom.exportBtn.addEventListener("click", exportJson);
-    dom.themeBtn.addEventListener("click", ()=>{appState.settings.theme=appState.settings.theme==="dark"?"light":"dark"; render(); autoSaveState();});
-    dom.jsonFileInput.addEventListener("change", event=>{const file=event.target.files?.[0]; if(file) importJson(file); event.target.value="";});
-
-    dom.liveValidateBtn.addEventListener("click", ()=>{
-      appState.live.started=true; const idx=getCurrentLiveHoleIndex(); const row=appState.holeScores[idx]; if(!row) return;
-      const validationA=parseScoreEntry(appState.live.bufferA); const validationB=parseScoreEntry(appState.live.bufferB);
-      if(!validationA.valid || !validationB.valid){dom.liveError.textContent=validationA.message||validationB.message||"Saisie invalide."; toast(dom.liveError.textContent, true); return;}
-      if(validationA.parsed===null || validationB.parsed===null){dom.liveError.textContent="Renseignez les deux scores du trou en cours."; toast(dom.liveError.textContent, true); return;}
-      dom.liveError.textContent=""; row.playerAGross=validationA.parsed; row.playerBGross=validationB.parsed; appState.live.bufferA=""; appState.live.bufferB="";
-      recomputeMatch(); autoSaveState(); showIndicator("Sauvegardé"); render();
-      requestAnimationFrame(()=>{const nextInput=dom.liveScoreA; if(nextInput && !nextInput.disabled){nextInput.focus(); nextInput.scrollIntoView({behavior:"smooth", block:"center"});}});
-    });
-    dom.liveUndoBtn.addEventListener("click", ()=>{
-      const idx=getLastCompletedHoleIndex(); if(idx<0){toast("Aucun trou validé à effacer.", true); return;}
-      appState.holeScores[idx].playerAGross=null; appState.holeScores[idx].playerBGross=null; appState.live.bufferA=""; appState.live.bufferB=""; appState.live.started=idx>0;
-      recomputeMatch(); autoSaveState(); showIndicator("Sauvegardé"); render();
-      requestAnimationFrame(()=>{if(dom.liveScoreA && !dom.liveScoreA.disabled){dom.liveScoreA.focus(); dom.liveScoreA.scrollIntoView({behavior:"smooth", block:"center"});}});
-    });
-    dom.shareResultBtn.addEventListener("click", async ()=>{try{await shareResultImage();}catch(error){toast(error?.message||"Impossible de générer l’image.", true);}});
-    dom.liveScoreA.addEventListener("input", ()=>{appState.live.started=true; appState.live.bufferA=dom.liveScoreA.value;});
-    dom.liveScoreB.addEventListener("input", ()=>{appState.live.started=true; appState.live.bufferB=dom.liveScoreB.value;});
-    dom.liveScoreA.addEventListener("keydown", event=>{if(event.key==="Enter"){event.preventDefault(); dom.liveScoreB.focus();}});
-    dom.liveScoreB.addEventListener("keydown", event=>{if(event.key==="Enter"){event.preventDefault(); dom.liveValidateBtn.click();}});
-
-    try{
-      const saved=loadStateFromStorage();
-      if(saved?.state){hydrateState(saved.state); setTimeout(()=>showIndicator("Dernière partie restaurée", 1900), 350);} else {recomputeMatch(); render();}
-    } catch(error) { debugLog("Restauration automatique impossible", error); recomputeMatch(); render(); }
-
-    debugLog("Application initialisée", appState);
-  </script>
+document.addEventListener('change', (e)=>{ const el=e.target; if(!(el instanceof HTMLElement)) return; const clubSel=document.getElementById('clubSelect'), courseSel=document.getElementById('courseSelect'); if(el===clubSel){ state.clubId=clubSel.value; state.courseId=getClub(state.clubId).courses[0].courseId; state.rows=buildRows(currentCourse()); recompute(); render(); save(); return; } if(el===courseSel){ state.courseId=courseSel.value; state.rows=buildRows(currentCourse()); recompute(); render(); save(); return; } const role=el.dataset.role, k=el.dataset.player; if(role && k){ if(role==='name') state.players[k].name=el.value; if(role==='gender') state.players[k].gender=el.value; if(role==='index') state.players[k].index=parseIndex(el.value); if(role==='tee') state.players[k].tee=el.value; recompute(); render(); save(); } });
+document.getElementById('liveA').addEventListener('input', e=>state.live.a=e.target.value); document.getElementById('liveB').addEventListener('input', e=>state.live.b=e.target.value);
+document.getElementById('validateBtn').addEventListener('click', ()=>{ const idx=state.rows.findIndex(r=>!(isEntered(r.playerAGross)&&isEntered(r.playerBGross))); const target=idx===-1?state.rows.length-1:idx; const row=state.rows[target]; const va=parseScore(state.live.a), vb=parseScore(state.live.b); if(!va.ok || !vb.ok){ document.getElementById('liveError').textContent=va.msg || vb.msg; return; } if(va.val===null || vb.val===null){ document.getElementById('liveError').textContent='Renseignez les deux scores.'; return; } document.getElementById('liveError').textContent=''; row.playerAGross=va.val; row.playerBGross=vb.val; state.live.a=''; state.live.b=''; recompute(); render(); save(); });
+document.getElementById('undoBtn').addEventListener('click', ()=>{ for(let i=state.rows.length-1;i>=0;i--){ const r=state.rows[i]; if(isEntered(r.playerAGross)&&isEntered(r.playerBGross)){ r.playerAGross=null; r.playerBGross=null; break; } } recompute(); render(); save(); });
+document.getElementById('newBtn').addEventListener('click', ()=>{ reset(); toast('Nouveau match prêt'); }); document.getElementById('saveBtn').addEventListener('click', save); document.getElementById('loadBtn').addEventListener('click', load); document.getElementById('exportBtn').addEventListener('click', exportJson); document.getElementById('importBtn').addEventListener('click', ()=>document.getElementById('importInput').click()); document.getElementById('importInput').addEventListener('change', e=>{ const f=e.target.files?.[0]; if(f) importJson(f); e.target.value=''; });
+try{ const raw=localStorage.getItem(STORAGE_KEY); if(raw){ const obj=JSON.parse(raw); Object.assign(state,obj); } }catch(e){}
+recompute(); render();
+</script>
 </body>
 </html>
