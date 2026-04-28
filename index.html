@@ -26,6 +26,86 @@ button,input,select{font:inherit}button{min-height:44px;border:1px solid var(--l
 .indicator{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:rgba(23,49,38,.95);color:#fff;padding:8px 12px;border-radius:999px;font-size:.82rem;font-weight:800;opacity:0;transition:.25s;pointer-events:none}.indicator.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
 .footer-note{font-size:.85rem;color:var(--muted);margin-top:10px;line-height:1.45}
 @media (max-width:860px){.grid-2,.metrics,.banner,.toolbar,.live-actions,.live-inputs{grid-template-columns:1fr} .banner{position:static}}
+
+
+/* ===== Minimal iPhone responsive patch ===== */
+.grid > *,
+.grid-2 > *,
+.metrics > *,
+.field,
+.panel,
+.hero,
+.banner,
+.table-wrap {
+  min-width: 0;
+}
+
+input,
+select,
+.score-input {
+  width: 100%;
+  max-width: 100%;
+}
+
+select {
+  min-width: 0;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 12px 12px 92px;
+  }
+
+  .hero,
+  .panel {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .banner {
+    grid-template-columns: 1fr !important;
+    position: static !important;
+    gap: 8px;
+  }
+
+  .grid-2,
+  .live-inputs,
+  .live-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .score-input {
+    min-height: 58px;
+    font-size: 1.35rem;
+  }
+
+  th,
+  td {
+    padding: 8px 6px;
+  }
+}
+
+@media (max-width: 390px) {
+  .metrics,
+  .toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .score-input {
+    min-height: 54px;
+    font-size: 1.2rem;
+  }
+}
+
 </style>
 </head>
 <body>
